@@ -1,0 +1,10 @@
+{
+  "threshold": 0.039343081414699554,
+  "target_fpr": 0.01,
+  "mse_weight": 0.6,
+  "mahal_weight": 0.4,
+  "mse_norm_lo": 0.0012933051912114024,
+  "mse_norm_hi": 17.261240005493164,
+  "mahal_norm_lo": 1.601345435371193,
+  "mahal_norm_hi": 324.7428253535503
+}

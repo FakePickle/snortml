@@ -1,0 +1,1099 @@
+2026-06-22 18:27:30,261 | INFO | ============================================================
+2026-06-22 18:27:30,262 | INFO | SnortML+ Inference Daemon
+2026-06-22 18:27:30,263 | INFO | ============================================================
+2026-06-22 18:27:39,138 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-22 18:29:13,649 | INFO | AnomalyScorer ready | features=31 | threshold=0.7531
+2026-06-22 18:29:13,650 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-22 18:29:13,650 | INFO | Interface : Wi-Fi
+2026-06-22 18:29:13,650 | INFO | Threshold : 0.7531
+2026-06-22 18:29:13,650 | INFO | Batch size: 64
+2026-06-22 18:29:13,650 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-22 18:29:13,650 | INFO | ============================================================
+2026-06-22 18:29:22,517 | INFO | Starting capture on interface: Wi-Fi
+2026-06-22 18:29:22,518 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-22 18:29:22,551 | ERROR | Daemon error: Please specify a pcap file path or a valid network interface name as source.
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 75, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 180, in stream_flows
+    streamer = NFStreamer(
+        source=interface,
+    ...<3 lines>...
+        splt_analysis=0,
+    )
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 90, in __init__
+    self.source = source
+    ^^^^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 153, in source
+    raise ValueError(
+        "Please specify a pcap file path or a valid network interface name as source."
+    )
+ValueError: Please specify a pcap file path or a valid network interface name as source.
+2026-06-22 18:29:22,554 | INFO | 
+Session summary:
+2026-06-22 18:29:22,554 | INFO |   Runtime    : 8.9s
+2026-06-22 18:29:22,554 | INFO |   Flows seen : 0
+2026-06-22 18:29:22,555 | INFO |   Alerts     : 0
+2026-06-22 18:31:59,088 | INFO | ============================================================
+2026-06-22 18:31:59,088 | INFO | SnortML+ Inference Daemon
+2026-06-22 18:31:59,089 | INFO | ============================================================
+2026-06-22 18:31:59,368 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-22 18:32:00,232 | INFO | AnomalyScorer ready | features=31 | threshold=0.7531
+2026-06-22 18:32:00,233 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-22 18:32:00,233 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-22 18:32:00,233 | INFO | Threshold : 0.7531
+2026-06-22 18:32:00,233 | INFO | Batch size: 64
+2026-06-22 18:32:00,234 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-22 18:32:00,234 | INFO | ============================================================
+2026-06-22 18:32:00,246 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-22 18:32:00,246 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-22 18:33:52,861 | ERROR | Scoring error: 'charmap' codec can't encode character '\u2192' in position 107: character maps to <undefined>
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 131, in _score_and_alert
+    alerter.alert(buffer[i], float(score), scorer.threshold)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Programming\snortml_inference_final\snortml_inference\alerter.py", line 73, in alert
+    f.write(alert_line + "\n")
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 107: character maps to <undefined>
+2026-06-22 18:36:03,475 | ERROR | Scoring error: 'charmap' codec can't encode character '\u2192' in position 135: character maps to <undefined>
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 131, in _score_and_alert
+    alerter.alert(buffer[i], float(score), scorer.threshold)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Programming\snortml_inference_final\snortml_inference\alerter.py", line 73, in alert
+    f.write(alert_line + "\n")
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 135: character maps to <undefined>
+2026-06-22 18:36:07,196 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 75, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 188, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-22 18:36:07,212 | INFO | 
+Session summary:
+2026-06-22 18:36:07,213 | INFO |   Runtime    : 247.0s
+2026-06-22 18:36:07,213 | INFO |   Flows seen : 2
+2026-06-22 18:36:07,213 | INFO |   Alerts     : 2
+2026-06-22 18:36:07,213 | INFO |   Alert rate : 100.00%
+2026-06-22 18:36:08,914 | INFO | ============================================================
+2026-06-22 18:36:08,914 | INFO | SnortML+ Inference Daemon
+2026-06-22 18:36:08,914 | INFO | ============================================================
+2026-06-22 18:36:09,209 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-22 18:36:10,079 | INFO | AnomalyScorer ready | features=31 | threshold=0.7531
+2026-06-22 18:36:10,079 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-22 18:36:10,079 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-22 18:36:10,080 | INFO | Threshold : 0.7531
+2026-06-22 18:36:10,080 | INFO | Batch size: 64
+2026-06-22 18:36:10,080 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-22 18:36:10,080 | INFO | ============================================================
+2026-06-22 18:36:10,091 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-22 18:36:10,092 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-22 18:44:02,572 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 75, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 188, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-22 18:44:02,575 | INFO | 
+Session summary:
+2026-06-22 18:44:02,575 | INFO |   Runtime    : 472.5s
+2026-06-22 18:44:02,576 | INFO |   Flows seen : 128
+2026-06-22 18:44:02,576 | INFO |   Alerts     : 128
+2026-06-22 18:44:02,576 | INFO |   Alert rate : 100.00%
+2026-06-28 20:33:55,465 | INFO | ============================================================
+2026-06-28 20:33:55,466 | INFO | SnortML+ Inference Daemon
+2026-06-28 20:33:55,466 | INFO | ============================================================
+2026-06-28 20:33:56,618 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-28 20:34:03,980 | INFO | AnomalyScorer ready | features=31 | threshold=0.7531
+2026-06-28 20:34:03,981 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-28 20:34:03,981 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-28 20:34:03,981 | INFO | Threshold : 0.7531
+2026-06-28 20:34:03,981 | INFO | Batch size: 64
+2026-06-28 20:34:03,981 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-28 20:34:03,981 | INFO | ============================================================
+2026-06-28 20:34:04,167 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-28 20:34:04,167 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-28 20:35:42,732 | ERROR | Scoring error: X has 31 features, but StandardScaler is expecting 43 features as input.
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 122, in _score_and_alert
+    X = scorer.preprocess_batch(buffer)
+  File "D:\Programming\snortml_inference_final\snortml_inference\scorer.py", line 116, in preprocess_batch
+    rows = np.vstack([self.preprocess(f) for f in flow_list])
+                      ~~~~~~~~~~~~~~~^^^
+  File "D:\Programming\snortml_inference_final\snortml_inference\scorer.py", line 112, in preprocess
+    return self.scaler.transform(X).astype(np.float32)
+           ~~~~~~~~~~~~~~~~~~~~~^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\sklearn\utils\_set_output.py", line 319, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\sklearn\preprocessing\_data.py", line 1111, in transform
+    X = validate_data(
+        self,
+    ...<6 lines>...
+        ensure_all_finite="allow-nan",
+    )
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\sklearn\utils\validation.py", line 3059, in validate_data
+    _check_n_features(_estimator, X, reset=reset)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\sklearn\utils\validation.py", line 2923, in _check_n_features
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: X has 31 features, but StandardScaler is expecting 43 features as input.
+2026-06-28 20:36:03,265 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 75, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 188, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-28 20:36:03,304 | INFO | 
+Session summary:
+2026-06-28 20:36:03,305 | INFO |   Runtime    : 119.3s
+2026-06-28 20:36:03,305 | INFO |   Flows seen : 0
+2026-06-28 20:36:03,305 | INFO |   Alerts     : 0
+2026-06-28 20:38:01,235 | INFO | ============================================================
+2026-06-28 20:38:01,235 | INFO | SnortML+ Inference Daemon
+2026-06-28 20:38:01,235 | INFO | ============================================================
+2026-06-28 20:38:01,503 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-28 20:38:02,330 | INFO | AnomalyScorer ready | features=43 | threshold=0.7489
+2026-06-28 20:38:02,330 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-28 20:38:02,330 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-28 20:38:02,330 | INFO | Threshold : 0.7489
+2026-06-28 20:38:02,330 | INFO | Batch size: 64
+2026-06-28 20:38:02,330 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-28 20:38:02,331 | INFO | ============================================================
+2026-06-28 20:38:02,341 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-28 20:38:02,341 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-28 20:53:23,704 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 75, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 188, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-28 20:53:23,870 | INFO | 
+Session summary:
+2026-06-28 20:53:23,898 | INFO |   Runtime    : 921.5s
+2026-06-28 20:53:23,901 | INFO |   Flows seen : 256
+2026-06-28 20:53:23,902 | INFO |   Alerts     : 256
+2026-06-28 20:53:23,902 | INFO |   Alert rate : 100.00%
+2026-06-30 13:39:10,061 | INFO | ============================================================
+2026-06-30 13:39:10,063 | INFO | SnortML+ Inference Daemon
+2026-06-30 13:39:10,064 | INFO | ============================================================
+2026-06-30 13:39:13,053 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 13:45:16,790 | INFO | ============================================================
+2026-06-30 13:45:16,791 | INFO | SnortML+ Inference Daemon
+2026-06-30 13:45:16,791 | INFO | ============================================================
+2026-06-30 13:45:17,795 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 13:45:20,121 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 13:45:20,122 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 13:45:20,123 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 13:45:20,123 | INFO | Threshold : 0.0393
+2026-06-30 13:45:20,123 | INFO | Batch size: 64
+2026-06-30 13:45:20,123 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 13:45:20,124 | INFO | ============================================================
+2026-06-30 13:45:21,983 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 13:45:21,983 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 14:56:36,064 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 209, in stream_flows
+    raise ImportError(
+            ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 14:56:36,140 | INFO | 
+Session summary:
+2026-06-30 14:56:36,140 | INFO |   Runtime    : 4276.0s
+2026-06-30 14:56:36,141 | INFO |   Flows seen : 640
+2026-06-30 14:56:36,141 | INFO |   Alerts     : 640
+2026-06-30 14:56:36,141 | INFO |   Alert rate : 100.00%
+2026-06-30 14:56:37,985 | INFO | ============================================================
+2026-06-30 14:56:37,986 | INFO | SnortML+ Inference Daemon
+2026-06-30 14:56:37,986 | INFO | ============================================================
+2026-06-30 14:56:38,610 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 14:56:40,468 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 14:56:40,469 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 14:56:40,469 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 14:56:40,469 | INFO | Threshold : 0.0393
+2026-06-30 14:56:40,470 | INFO | Batch size: 64
+2026-06-30 14:56:40,470 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 14:56:40,470 | INFO | ============================================================
+2026-06-30 14:56:40,494 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 14:56:40,495 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:01:39,172 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 225, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:01:39,177 | INFO | 
+Session summary:
+2026-06-30 15:01:39,178 | INFO |   Runtime    : 298.7s
+2026-06-30 15:01:39,178 | INFO |   Flows seen : 0
+2026-06-30 15:01:39,178 | INFO |   Alerts     : 0
+2026-06-30 15:04:13,716 | INFO | ============================================================
+2026-06-30 15:04:13,717 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:04:13,717 | INFO | ============================================================
+2026-06-30 15:04:14,353 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:04:16,233 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:04:16,234 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:04:16,234 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:04:16,235 | INFO | Threshold : 0.0393
+2026-06-30 15:04:16,235 | INFO | Batch size: 64
+2026-06-30 15:04:16,235 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:04:16,235 | INFO | ============================================================
+2026-06-30 15:04:16,258 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:04:16,258 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:07:54,450 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 225, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:07:54,456 | INFO | 
+Session summary:
+2026-06-30 15:07:54,457 | INFO |   Runtime    : 218.2s
+2026-06-30 15:07:54,457 | INFO |   Flows seen : 0
+2026-06-30 15:07:54,457 | INFO |   Alerts     : 0
+2026-06-30 15:08:04,799 | INFO | ============================================================
+2026-06-30 15:08:04,800 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:08:04,800 | INFO | ============================================================
+2026-06-30 15:08:05,495 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:08:07,468 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:08:07,468 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:08:07,469 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:08:07,469 | INFO | Threshold : 0.0393
+2026-06-30 15:08:07,470 | INFO | Batch size: 64
+2026-06-30 15:08:07,470 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:08:07,470 | INFO | ============================================================
+2026-06-30 15:08:07,496 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:08:07,496 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:11:19,143 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 225, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:11:19,149 | INFO | 
+Session summary:
+2026-06-30 15:11:19,150 | INFO |   Runtime    : 191.7s
+2026-06-30 15:11:19,150 | INFO |   Flows seen : 0
+2026-06-30 15:11:19,150 | INFO |   Alerts     : 0
+2026-06-30 15:15:44,196 | INFO | ============================================================
+2026-06-30 15:15:44,197 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:15:44,197 | INFO | ============================================================
+2026-06-30 15:15:45,104 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:15:46,987 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:15:46,987 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:15:46,988 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:15:46,988 | INFO | Threshold : 0.0393
+2026-06-30 15:15:46,989 | INFO | Batch size: 64
+2026-06-30 15:15:46,989 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:15:46,989 | INFO | ============================================================
+2026-06-30 15:15:47,018 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:15:47,018 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:16:44,252 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 225, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:16:44,263 | INFO | 
+Session summary:
+2026-06-30 15:16:44,264 | INFO |   Runtime    : 57.3s
+2026-06-30 15:16:44,264 | INFO |   Flows seen : 0
+2026-06-30 15:16:44,265 | INFO |   Alerts     : 0
+2026-06-30 15:19:35,044 | INFO | ============================================================
+2026-06-30 15:19:35,044 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:19:35,045 | INFO | ============================================================
+2026-06-30 15:19:35,671 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:19:37,530 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:19:37,531 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:19:37,531 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:19:37,531 | INFO | Threshold : 0.0393
+2026-06-30 15:19:37,531 | INFO | Batch size: 64
+2026-06-30 15:19:37,531 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:19:37,532 | INFO | ============================================================
+2026-06-30 15:19:37,557 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:19:37,557 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:19:51,704 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 230, in stream_flows
+    # Attach metadata for alert context
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:19:51,720 | INFO | 
+Session summary:
+2026-06-30 15:19:51,721 | INFO |   Runtime    : 14.2s
+2026-06-30 15:19:51,721 | INFO |   Flows seen : 0
+2026-06-30 15:19:51,721 | INFO |   Alerts     : 0
+2026-06-30 15:21:01,008 | INFO | ============================================================
+2026-06-30 15:21:01,008 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:21:01,009 | INFO | ============================================================
+2026-06-30 15:21:01,638 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:21:03,478 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:21:03,479 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:21:03,480 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:21:03,480 | INFO | Threshold : 0.0393
+2026-06-30 15:21:03,480 | INFO | Batch size: 64
+2026-06-30 15:21:03,480 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:21:03,480 | INFO | ============================================================
+2026-06-30 15:21:03,504 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:21:03,505 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:23:27,494 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 228, in stream_flows
+    continue
+        ^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:23:27,499 | INFO | 
+Session summary:
+2026-06-30 15:23:27,500 | INFO |   Runtime    : 144.0s
+2026-06-30 15:23:27,500 | INFO |   Flows seen : 0
+2026-06-30 15:23:27,500 | INFO |   Alerts     : 0
+2026-06-30 15:23:29,542 | INFO | ============================================================
+2026-06-30 15:23:29,544 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:23:29,544 | INFO | ============================================================
+2026-06-30 15:23:30,162 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:23:32,020 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:23:32,021 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:23:32,021 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:23:32,021 | INFO | Threshold : 0.0393
+2026-06-30 15:23:32,021 | INFO | Batch size: 64
+2026-06-30 15:23:32,022 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:23:32,022 | INFO | ============================================================
+2026-06-30 15:23:32,047 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:23:32,047 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:24:34,789 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 225, in stream_flows
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:24:34,794 | INFO | 
+Session summary:
+2026-06-30 15:24:34,795 | INFO |   Runtime    : 62.8s
+2026-06-30 15:24:34,795 | INFO |   Flows seen : 0
+2026-06-30 15:24:34,795 | INFO |   Alerts     : 0
+2026-06-30 15:24:37,057 | INFO | ============================================================
+2026-06-30 15:24:37,057 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:24:37,058 | INFO | ============================================================
+2026-06-30 15:24:37,676 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:24:39,520 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:24:39,520 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:24:39,521 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:24:39,521 | INFO | Threshold : 0.0393
+2026-06-30 15:24:39,521 | INFO | Batch size: 64
+2026-06-30 15:24:39,521 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:24:39,522 | INFO | ============================================================
+2026-06-30 15:24:39,546 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:24:39,546 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:25:48,611 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 226, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:25:48,616 | INFO | 
+Session summary:
+2026-06-30 15:25:48,616 | INFO |   Runtime    : 69.1s
+2026-06-30 15:25:48,617 | INFO |   Flows seen : 0
+2026-06-30 15:25:48,617 | INFO |   Alerts     : 0
+2026-06-30 15:26:09,613 | INFO | ============================================================
+2026-06-30 15:26:09,614 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:26:09,615 | INFO | ============================================================
+2026-06-30 15:26:10,231 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:26:12,104 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:26:12,105 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:26:12,106 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:26:12,106 | INFO | Threshold : 0.0393
+2026-06-30 15:26:12,106 | INFO | Batch size: 64
+2026-06-30 15:26:12,106 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:26:12,106 | INFO | ============================================================
+2026-06-30 15:26:12,131 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:26:12,131 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:26:48,605 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 228, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:26:48,614 | INFO | 
+Session summary:
+2026-06-30 15:26:48,614 | INFO |   Runtime    : 36.5s
+2026-06-30 15:26:48,615 | INFO |   Flows seen : 0
+2026-06-30 15:26:48,615 | INFO |   Alerts     : 0
+2026-06-30 15:28:00,390 | INFO | ============================================================
+2026-06-30 15:28:00,390 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:28:00,391 | INFO | ============================================================
+2026-06-30 15:28:01,017 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:28:02,836 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:28:02,837 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:28:02,837 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:28:02,837 | INFO | Threshold : 0.0393
+2026-06-30 15:28:02,837 | INFO | Batch size: 64
+2026-06-30 15:28:02,837 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:28:02,837 | INFO | ============================================================
+2026-06-30 15:28:02,862 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:28:02,863 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:28:41,021 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 228, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:28:41,028 | INFO | 
+Session summary:
+2026-06-30 15:28:41,029 | INFO |   Runtime    : 38.2s
+2026-06-30 15:28:41,029 | INFO |   Flows seen : 0
+2026-06-30 15:28:41,029 | INFO |   Alerts     : 0
+2026-06-30 15:29:18,843 | INFO | ============================================================
+2026-06-30 15:29:18,844 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:29:18,845 | INFO | ============================================================
+2026-06-30 15:29:19,513 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:29:21,463 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:29:21,464 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:29:21,465 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:29:21,465 | INFO | Threshold : 0.0393
+2026-06-30 15:29:21,465 | INFO | Batch size: 64
+2026-06-30 15:29:21,465 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:29:21,465 | INFO | ============================================================
+2026-06-30 15:29:21,486 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:29:21,487 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:30:04,970 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 228, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:30:04,979 | INFO | 
+Session summary:
+2026-06-30 15:30:04,979 | INFO |   Runtime    : 43.5s
+2026-06-30 15:30:04,980 | INFO |   Flows seen : 0
+2026-06-30 15:30:04,980 | INFO |   Alerts     : 0
+2026-06-30 15:30:09,342 | INFO | ============================================================
+2026-06-30 15:30:09,342 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:30:09,343 | INFO | ============================================================
+2026-06-30 15:30:09,974 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:30:11,900 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:30:11,901 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:30:11,902 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:30:11,902 | INFO | Threshold : 0.0393
+2026-06-30 15:30:11,902 | INFO | Batch size: 64
+2026-06-30 15:30:11,902 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:30:11,903 | INFO | ============================================================
+2026-06-30 15:30:11,924 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:30:11,924 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:30:39,314 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 228, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:30:39,321 | INFO | 
+Session summary:
+2026-06-30 15:30:39,322 | INFO |   Runtime    : 27.4s
+2026-06-30 15:30:39,322 | INFO |   Flows seen : 0
+2026-06-30 15:30:39,323 | INFO |   Alerts     : 0
+2026-06-30 15:31:56,684 | INFO | ============================================================
+2026-06-30 15:31:56,685 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:31:56,685 | INFO | ============================================================
+2026-06-30 15:31:57,309 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:31:59,220 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:31:59,221 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:31:59,222 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:31:59,222 | INFO | Threshold : 0.0393
+2026-06-30 15:31:59,222 | INFO | Batch size: 64
+2026-06-30 15:31:59,222 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:31:59,222 | INFO | ============================================================
+2026-06-30 15:31:59,244 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:31:59,245 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:32:58,935 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 228, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:32:58,940 | INFO | 
+Session summary:
+2026-06-30 15:32:58,940 | INFO |   Runtime    : 59.7s
+2026-06-30 15:32:58,941 | INFO |   Flows seen : 0
+2026-06-30 15:32:58,941 | INFO |   Alerts     : 0
+2026-06-30 15:33:03,508 | INFO | ============================================================
+2026-06-30 15:33:03,509 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:33:03,509 | INFO | ============================================================
+2026-06-30 15:33:04,113 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:33:06,028 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:33:06,029 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:33:06,029 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:33:06,037 | INFO | Threshold : 0.0393
+2026-06-30 15:33:06,038 | INFO | Batch size: 64
+2026-06-30 15:33:06,038 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:33:06,038 | INFO | ============================================================
+2026-06-30 15:33:06,062 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:33:06,063 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:34:18,937 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 228, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:34:18,943 | INFO | 
+Session summary:
+2026-06-30 15:34:18,944 | INFO |   Runtime    : 72.9s
+2026-06-30 15:34:18,944 | INFO |   Flows seen : 0
+2026-06-30 15:34:18,944 | INFO |   Alerts     : 0
+2026-06-30 15:34:35,049 | INFO | ============================================================
+2026-06-30 15:34:35,050 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:34:35,051 | INFO | ============================================================
+2026-06-30 15:34:35,674 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:34:37,527 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:34:37,527 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:34:37,528 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:34:37,528 | INFO | Threshold : 0.0393
+2026-06-30 15:34:37,528 | INFO | Batch size: 64
+2026-06-30 15:34:37,528 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:34:37,529 | INFO | ============================================================
+2026-06-30 15:34:37,550 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:34:37,551 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:36:08,885 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 228, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:36:08,892 | INFO | 
+Session summary:
+2026-06-30 15:36:08,892 | INFO |   Runtime    : 91.4s
+2026-06-30 15:36:08,892 | INFO |   Flows seen : 0
+2026-06-30 15:36:08,892 | INFO |   Alerts     : 0
+2026-06-30 15:39:28,302 | INFO | ============================================================
+2026-06-30 15:39:28,303 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:39:28,303 | INFO | ============================================================
+2026-06-30 15:39:29,008 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:39:31,070 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:39:31,072 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:39:31,072 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:39:31,072 | INFO | Threshold : 0.0393
+2026-06-30 15:39:31,072 | INFO | Batch size: 64
+2026-06-30 15:39:31,072 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:39:31,073 | INFO | ============================================================
+2026-06-30 15:39:31,096 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:39:31,097 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:40:30,558 | ERROR | Daemon error: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+  File "D:\Programming\snortml_inference_final\snortml_inference\daemon.py", line 72, in run
+    for features in stream_flows(
+                    ~~~~~~~~~~~~^
+        interface,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        active_timeout=active_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\Programming\snortml_inference_final\snortml_inference\extractor.py", line 228, in stream_flows
+    for flow in streamer:
+                ^^^^^^^^
+  File "D:\Programming\snortml_inference_final\.venv\Lib\site-packages\nfstream\streamer.py", line 524, in __iter__
+    recv = channel.get()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "C:\Users\harsh\AppData\Roaming\uv\python\cpython-3.14-windows-x86_64-none\Lib\multiprocessing\connection.py", line 335, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+        [ov.event], False, INFINITE)
+InterruptedError: [Errno 4] Interrupted function call
+2026-06-30 15:40:30,567 | INFO | 
+Session summary:
+2026-06-30 15:40:30,567 | INFO |   Runtime    : 59.5s
+2026-06-30 15:40:30,568 | INFO |   Flows seen : 0
+2026-06-30 15:40:30,568 | INFO |   Alerts     : 0
+2026-06-30 15:43:46,207 | INFO | ============================================================
+2026-06-30 15:43:46,208 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:43:46,209 | INFO | ============================================================
+2026-06-30 15:43:47,092 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:43:49,020 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:43:49,020 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:43:49,021 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:43:49,021 | INFO | Threshold : 0.0393
+2026-06-30 15:43:49,021 | INFO | Batch size: 64
+2026-06-30 15:43:49,021 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:43:49,021 | INFO | ============================================================
+2026-06-30 15:43:49,045 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:43:49,045 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:44:46,466 | INFO | 
+Session summary:
+2026-06-30 15:44:46,466 | INFO |   Runtime    : 57.4s
+2026-06-30 15:44:46,466 | INFO |   Flows seen : 5
+2026-06-30 15:44:46,467 | INFO |   Alerts     : 5
+2026-06-30 15:44:46,467 | INFO |   Alert rate : 100.00%
+2026-06-30 15:46:16,619 | INFO | ============================================================
+2026-06-30 15:46:16,619 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:46:16,620 | INFO | ============================================================
+2026-06-30 15:46:17,241 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:46:19,081 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:46:19,082 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:46:19,083 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:46:19,083 | INFO | Threshold : 0.0393
+2026-06-30 15:46:19,083 | INFO | Batch size: 64
+2026-06-30 15:46:19,083 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:46:19,084 | INFO | ============================================================
+2026-06-30 15:46:19,108 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:46:19,110 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:49:06,504 | INFO | 
+Session summary:
+2026-06-30 15:49:06,505 | INFO |   Runtime    : 167.4s
+2026-06-30 15:49:06,506 | INFO |   Flows seen : 21
+2026-06-30 15:49:06,506 | INFO |   Alerts     : 21
+2026-06-30 15:49:06,507 | INFO |   Alert rate : 100.00%
+2026-06-30 15:51:13,992 | INFO | ============================================================
+2026-06-30 15:51:13,993 | INFO | SnortML+ Inference Daemon
+2026-06-30 15:51:13,994 | INFO | ============================================================
+2026-06-30 15:51:14,607 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 15:51:16,531 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 15:51:16,532 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 15:51:16,532 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:51:16,533 | INFO | Threshold : 0.0393
+2026-06-30 15:51:16,533 | INFO | Batch size: 64
+2026-06-30 15:51:16,533 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 15:51:16,533 | INFO | ============================================================
+2026-06-30 15:51:16,560 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 15:51:16,561 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 15:52:48,646 | INFO | 
+Session summary:
+2026-06-30 15:52:48,648 | INFO |   Runtime    : 92.1s
+2026-06-30 15:52:48,648 | INFO |   Flows seen : 15
+2026-06-30 15:52:48,649 | INFO |   Alerts     : 15
+2026-06-30 15:52:48,649 | INFO |   Alert rate : 100.00%
+2026-06-30 16:15:19,390 | INFO | ============================================================
+2026-06-30 16:15:19,391 | INFO | SnortML+ Inference Daemon
+2026-06-30 16:15:19,392 | INFO | ============================================================
+2026-06-30 16:15:20,195 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 16:15:22,137 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 16:15:22,138 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 16:15:22,138 | INFO | score_override active: using 0.2000 instead of calibrated threshold 0.0393
+2026-06-30 16:15:22,139 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 16:15:22,139 | INFO | Threshold : 0.2000 (override)
+2026-06-30 16:15:22,139 | INFO | Batch size: 64
+2026-06-30 16:15:22,140 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 16:15:22,140 | INFO | ============================================================
+2026-06-30 16:15:22,163 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 16:15:22,163 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 16:16:42,288 | INFO | 
+Session summary:
+2026-06-30 16:16:42,289 | INFO |   Runtime    : 80.1s
+2026-06-30 16:16:42,289 | INFO |   Flows seen : 12
+2026-06-30 16:16:42,290 | INFO |   Alerts     : 4
+2026-06-30 16:16:42,291 | INFO |   Alert rate : 33.33%
+2026-06-30 16:19:32,109 | INFO | ============================================================
+2026-06-30 16:19:32,110 | INFO | SnortML+ Inference Daemon
+2026-06-30 16:19:32,110 | INFO | ============================================================
+2026-06-30 16:19:33,096 | INFO | ONNX model loaded: snortml_autoencoder_int8.onnx
+2026-06-30 16:19:35,073 | INFO | AnomalyScorer ready | features=43 | threshold=0.0393
+2026-06-30 16:19:35,073 | INFO | Alert file: alerts/snortml_alerts.log
+2026-06-30 16:19:35,074 | INFO | score_override active: using 0.2000 instead of calibrated threshold 0.0393
+2026-06-30 16:19:35,075 | INFO | Interface : \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 16:19:35,075 | INFO | Threshold : 0.2000 (override)
+2026-06-30 16:19:35,075 | INFO | Batch size: 64
+2026-06-30 16:19:35,075 | INFO | Listening for flows... (Ctrl+C to stop)
+2026-06-30 16:19:35,075 | INFO | ============================================================
+2026-06-30 16:19:35,102 | INFO | Starting capture on interface: \Device\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}
+2026-06-30 16:19:35,102 | INFO | Min packets: 5 | Idle timeout: 10s
+2026-06-30 18:26:24,885 | INFO | 
+Session summary:
+2026-06-30 18:26:24,887 | INFO |   Runtime    : 7609.8s
+2026-06-30 18:26:24,887 | INFO |   Flows seen : 1,790
+2026-06-30 18:26:24,887 | INFO |   Alerts     : 490
+2026-06-30 18:26:24,887 | INFO |   Alert rate : 27.37%

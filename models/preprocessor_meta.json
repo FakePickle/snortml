@@ -1,0 +1,249 @@
+{
+  "n_features": 43,
+  "corr_threshold": 0.95,
+  "clip_percentile": 99.9,
+  "dropped_corr": [
+    "ack_flag_number",
+    "Std"
+  ],
+  "ohe_categories": {
+    "Protocol Type": [
+      0,
+      1,
+      2,
+      6,
+      17,
+      58,
+      83
+    ]
+  },
+  "fill_values": {
+    "Header_Length": 27.2,
+    "Time_To_Live": 83.1,
+    "Rate": 119.43425185303305,
+    "fin_flag_number": 0.0,
+    "syn_flag_number": 0.0,
+    "rst_flag_number": 0.0,
+    "psh_flag_number": 0.1,
+    "ack_flag_number": 0.8,
+    "ece_flag_number": 0.0,
+    "cwr_flag_number": 0.0,
+    "ack_count": 8.0,
+    "syn_count": 0.0,
+    "fin_count": 0.0,
+    "rst_count": 0.0,
+    "HTTP": 0.0,
+    "HTTPS": 0.7,
+    "DNS": 0.0,
+    "Telnet": 0.0,
+    "SMTP": 0.0,
+    "SSH": 0.0,
+    "IRC": 0.0,
+    "TCP": 0.8,
+    "UDP": 0.1,
+    "DHCP": 0.0,
+    "ARP": 0.0,
+    "ICMP": 0.0,
+    "IGMP": 0.0,
+    "IPv": 1.0,
+    "LLC": 1.0,
+    "Tot sum": 1432.0,
+    "Min": 66.0,
+    "Max": 414.0,
+    "AVG": 166.3,
+    "Std": 117.223859914837,
+    "Tot size": 197.4,
+    "IAT": 0.0082052946090698,
+    "Number": 10.0,
+    "Variance": 13741.43333333333,
+    "Protocol Type_0": 0.0,
+    "Protocol Type_1": 0.0,
+    "Protocol Type_2": 0.0,
+    "Protocol Type_6": 1.0,
+    "Protocol Type_17": 0.0,
+    "Protocol Type_58": 0.0,
+    "Protocol Type_83": 0.0
+  },
+  "clip_values": {
+    "Header_Length": [
+      0.0,
+      51.6
+    ],
+    "Time_To_Live": [
+      0.0,
+      247.0
+    ],
+    "Rate": [
+      0.0,
+      474151.28645650455
+    ],
+    "fin_flag_number": [
+      0.0,
+      3.0
+    ],
+    "syn_flag_number": [
+      0.0,
+      2.0
+    ],
+    "rst_flag_number": [
+      0.0,
+      2.0
+    ],
+    "psh_flag_number": [
+      0.0,
+      86.0
+    ],
+    "ack_flag_number": [
+      0.0,
+      233.0
+    ],
+    "ece_flag_number": [
+      0.0,
+      0.1
+    ],
+    "cwr_flag_number": [
+      0.0,
+      0.1
+    ],
+    "ack_count": [
+      0.0,
+      233.0
+    ],
+    "syn_count": [
+      0.0,
+      3.0
+    ],
+    "fin_count": [
+      0.0,
+      3.0
+    ],
+    "rst_count": [
+      0.0,
+      3.0
+    ],
+    "HTTP": [
+      0.0,
+      1.0
+    ],
+    "HTTPS": [
+      0.0,
+      1.0
+    ],
+    "DNS": [
+      0.0,
+      1.0
+    ],
+    "Telnet": [
+      0.0,
+      0.0
+    ],
+    "SMTP": [
+      0.0,
+      0.0
+    ],
+    "SSH": [
+      0.0,
+      0.3
+    ],
+    "IRC": [
+      0.0,
+      0.1
+    ],
+    "TCP": [
+      0.0,
+      1.0
+    ],
+    "UDP": [
+      0.0,
+      1.0
+    ],
+    "DHCP": [
+      0.0,
+      0.2
+    ],
+    "ARP": [
+      0.0,
+      0.4
+    ],
+    "ICMP": [
+      0.0,
+      1.0
+    ],
+    "IGMP": [
+      0.0,
+      0.1
+    ],
+    "IPv": [
+      0.0,
+      1.0
+    ],
+    "LLC": [
+      0.0,
+      1.0
+    ],
+    "Tot sum": [
+      0.0,
+      459779.24400002416
+    ],
+    "Min": [
+      0.0,
+      1514.0
+    ],
+    "Max": [
+      0.0,
+      17360.0
+    ],
+    "AVG": [
+      0.0,
+      3830.8
+    ],
+    "Std": [
+      0.0,
+      5126.237066323732
+    ],
+    "Tot size": [
+      0.0,
+      459779.24400002416
+    ],
+    "IAT": [
+      0.0,
+      39615.66666666667
+    ],
+    "Number": [
+      1.0,
+      1582.1520000007004
+    ],
+    "Variance": [
+      0.0,
+      26278306.46231128
+    ],
+    "Protocol Type_0": [
+      0.0,
+      1.0
+    ],
+    "Protocol Type_1": [
+      0.0,
+      1.0
+    ],
+    "Protocol Type_2": [
+      0.0,
+      1.0
+    ],
+    "Protocol Type_6": [
+      0.0,
+      1.0
+    ],
+    "Protocol Type_17": [
+      0.0,
+      1.0
+    ],
+    "Protocol Type_58": [
+      0.0,
+      1.0
+    ],
+    "Protocol Type_83": [
+      0.0,
+      1.0
+    ]
+  }
+}

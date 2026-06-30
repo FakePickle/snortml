@@ -1,0 +1,51 @@
+# SnortML+ Inference Daemon Configuration
+
+# Network interface to capture on
+# Windows:  "Ethernet", "Wi-Fi", or run list_interfaces.py to find yours
+# Linux:    "eth0", "wlan0", "enp3s0" etc (check with: ip link)
+# RPi 4:    "eth0" (wired) or "wlan0" (wireless)
+interface: "\\Device\\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}"
+
+# Path to model artifacts (relative to this config file)
+models_dir: "models"
+
+# Capture settings
+capture:
+  # Only score flows with at least this many packets (reduces noise)
+  min_packets: 5
+  # Max flows to buffer before scoring batch (lower = lower latency)
+  batch_size: 64
+  # Score whatever's buffered after this many seconds, even if batch_size
+  # hasn't been reached. Prevents long silent gaps on low-traffic networks
+  # where 64 flows might take minutes to accumulate.
+  max_batch_wait_sec: 5
+  # Timeout in seconds — score a flow after this long even if not finished
+  idle_timeout: 10
+  active_timeout: 60
+
+# Alerting
+alerts:
+  # Write alerts to this file (set null to disable)
+  file: "alerts/snortml_alerts.log"
+  # Print alerts to console
+  console: true
+  # Minimum score to alert on (overrides model threshold if set, null = use model threshold)
+  # Set to 0.2 as a pragmatic starting point — the model's calibrated threshold
+  # (0.039, target_fpr=1%) was tuned against CICIoT2023 + limited home traffic
+  # and proved too tight against this machine's actual live traffic shape
+  # (IAT/Rate/Variance distributions differ meaningfully from the lab dataset).
+  # This is a stopgap, not a fix — proper recalibration (re-running
+  # calibrate_threshold() with threshold_fpr=0.2 against representative
+  # live-traffic samples) should replace this once available.
+  score_override: 0.2
+
+# Logging
+logging:
+  level: "INFO"
+  file: "logs/daemon.log"
+
+# Performance
+performance:
+  # Number of ONNX inference threads (set to CPU core count)
+  # RPi 4 = 4, your laptop = however many cores
+  threads: 4
