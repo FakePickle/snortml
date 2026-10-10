@@ -1,51 +1,119 @@
-# SnortML+ Inference Daemon Configuration
+# Anomaly daemon configuration.
+# Paths are relative to this file. Anything left out uses the default shown.
 
-# Network interface to capture on
-# Windows:  "Ethernet", "Wi-Fi", or run list_interfaces.py to find yours
-# Linux:    "eth0", "wlan0", "enp3s0" etc (check with: ip link)
-# RPi 4:    "eth0" (wired) or "wlan0" (wireless)
-interface: "\\Device\\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}"
+# ---------------------------------------------------------------------------
+# Where flows come from
+# ---------------------------------------------------------------------------
+source:
+  # live      capture on a network interface (needs root / administrator)
+  # zeek      follow a Zeek conn.log (TSV or JSON)
+  # suricata  follow the "flow" events of a Suricata eve.json
+  type: live
+  # For type: live. List the choices with: python -m snortml_inference interfaces
+  #   Linux / Raspberry Pi: "eth0", "wlan0", "enp3s0"
+  #   Windows: the \Device\NPF_{...} name printed by the interfaces command
+  interface: "\\Device\\NPF_{ED8E28DF-265D-4D60-8AC6-891E6CAA29FF}"
+  # For type: zeek or suricata
+  path: null
+  # Keep reading the log file as it grows
+  follow: true
 
-# Path to model artifacts (relative to this config file)
-models_dir: "models"
-
-# Capture settings
 capture:
-  # Only score flows with at least this many packets (reduces noise)
-  min_packets: 5
-  # Max flows to buffer before scoring batch (lower = lower latency)
-  batch_size: 64
-  # Score whatever's buffered after this many seconds, even if batch_size
-  # hasn't been reached. Prevents long silent gaps on low-traffic networks
-  # where 64 flows might take minutes to accumulate.
-  max_batch_wait_sec: 5
-  # Timeout in seconds — score a flow after this long even if not finished
+  # Flows with fewer packets than this are not shape-scored one by one
+  # (they still count in the per-host layer, which is where scans show up).
+  min_packets: 3
+  # nfstream flow expiry. The baseline must be recorded with the same values.
   idle_timeout: 10
   active_timeout: 60
+  # Score in batches of this many flows, or after this many seconds
+  batch_size: 64
+  max_batch_wait_sec: 5
 
-# Alerting
+# Address ranges that are "ours" in addition to the private ranges
+# (10/8, 172.16/12, 192.168/16, 100.64/10, link-local, fc00::/7).
+# Add your public IPv6 prefix here if your devices have global addresses.
+home_networks: []
+# home_networks: ["2001:db8:1234::/48"]
+
+# Where the baseline lives. Create it with:
+#   python -m snortml_inference baseline --source <interface or file>
+baseline_dir: "baseline"
+
+# ---------------------------------------------------------------------------
+# How many alerts you want
+# ---------------------------------------------------------------------------
+scoring:
+  # Target number of alerts per day on a typical day. This replaces the old
+  # score threshold: the threshold is derived from the baseline so that
+  # traffic like the baseline stays within this budget.
+  alerts_per_day: 10
+  # Tomorrow never looks exactly like the baseline. The threshold is this many
+  # times stricter than the baseline alone suggests. Lower it (to 1 at the
+  # least) for more sensitivity, raise it if a new day is too noisy.
+  drift_margin: 5
+  # Share of the budget for single-flow alerts; the rest goes to per-host alerts
+  flow_share: 0.7
+  # Length of the per-host windows, in seconds
+  window_seconds: 60
+  # A service needs this many baseline flows to get its own model; rarer ones
+  # share a pooled model.
+  min_group_flows: 500
+  # Add the autoencoder's reconstruction error to the score
+  autoencoder: true
+
+# Alert when one of your hosts uses a well-known service port that never
+# appeared in the baseline (first SSH, first SMB, first telnet ...).
+novelty:
+  enabled: true
+  # Services to accept without alerting, e.g. ["tcp/22", "udp/500"]
+  allow: []
+
+# ---------------------------------------------------------------------------
+# Alerts
+# ---------------------------------------------------------------------------
 alerts:
-  # Write alerts to this file (set null to disable)
-  file: "alerts/snortml_alerts.log"
-  # Print alerts to console
   console: true
-  # Minimum score to alert on (overrides model threshold if set, null = use model threshold)
-  # Set to 0.2 as a pragmatic starting point — the model's calibrated threshold
-  # (0.039, target_fpr=1%) was tuned against CICIoT2023 + limited home traffic
-  # and proved too tight against this machine's actual live traffic shape
-  # (IAT/Rate/Variance distributions differ meaningfully from the lab dataset).
-  # This is a stopgap, not a fix — proper recalibration (re-running
-  # calibrate_threshold() with threshold_fpr=0.2 against representative
-  # live-traffic samples) should replace this once available.
-  score_override: 0.2
+  # One line per alert
+  file: "alerts/alerts.log"
+  # One JSON object per alert, with Suricata-style field names
+  # (src_ip, dest_ip, dest_port, proto) for Wazuh or any SIEM. null disables.
+  json_file: "alerts/alerts.jsonl"
+  # Repeats of the same incident within this many seconds are counted, not
+  # re-sent (unless they become more severe).
+  suppress_seconds: 3600
+  # Hard cap. Hitting it means the baseline is out of date.
+  max_per_hour: 30
+  # Kinds of anomaly not to alert on. "download" is a large transfer from the
+  # internet to one of your hosts: the commonest harmless anomaly.
+  # Kinds: upload, download, internal-download, volume, timing, packet-size,
+  # connection-state, direction, fan-out, unanswered, new-service
+  mute: ["download"]
+  # LOW, MEDIUM, HIGH or CRITICAL
+  min_severity: LOW
+  # POST each alert somewhere. Either a URL (JSON body), or
+  #   webhook: {url: "https://ntfy.sh/my-topic", format: text}
+  webhook: null
 
-# Logging
+# ---------------------------------------------------------------------------
+# Signature IDS alongside
+# ---------------------------------------------------------------------------
+# Follow the IDS's alert file so that connections it already alerted on are
+# left to it, and only what signatures missed is reported here.
+# Not needed when source.type is suricata: its flow events already say.
+ids:
+  suricata_eve: null   # e.g. "/var/log/suricata/eve.json"
+  snort_json: null     # e.g. "/var/log/snort/alert_json.txt"
+  # suppress: say nothing about flows the IDS flagged
+  # tag:      alert anyway, marked "also flagged by signature IDS"
+  on_match: suppress
+
+# Keep the flows the daemon sees, so the baseline can be refreshed with
+#   python -m snortml_inference fit
+record:
+  enabled: true
+  dir: "data"
+  retention_days: 30
+
 logging:
   level: "INFO"
   file: "logs/daemon.log"
-
-# Performance
-performance:
-  # Number of ONNX inference threads (set to CPU core count)
-  # RPi 4 = 4, your laptop = however many cores
-  threads: 4
