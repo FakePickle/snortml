@@ -3,1029 +3,698 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Driftnet — Catch what your IDS missed</title>
-        <style>
-            @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
-
-            :root {
-                --bg: #12161c;
-                --surface: #1b212b;
-                --surface-2: #20283380;
-                --border: #2a323f;
-                --text: #e4e6ea;
-                --text-dim: #8c95a3;
-                --text-faint: #5b6472;
-                --amber: #e8a33d;
-                --amber-dim: #e8a33d26;
-                --steel: #5b8aa6;
-                --steel-dim: #5b8aa626;
-                --mono: "JetBrains Mono", monospace;
-                --sans: "Inter", -apple-system, sans-serif;
-            }
-
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-
-            body {
-                background: var(--bg);
-                color: var(--text);
-                font-family: var(--sans);
-                -webkit-font-smoothing: antialiased;
-                overflow-x: hidden;
-            }
-
-            a {
-                color: inherit;
-                text-decoration: none;
-            }
-
-            ::selection {
-                background: var(--amber-dim);
-                color: var(--amber);
-            }
-
-            /* ---------- background texture ---------- */
-            .grid-overlay {
-                position: fixed;
-                inset: 0;
-                background-image:
-                    linear-gradient(var(--border) 1px, transparent 1px),
-                    linear-gradient(90deg, var(--border) 1px, transparent 1px);
-                background-size: 64px 64px;
-                opacity: 0.18;
-                pointer-events: none;
-                z-index: 0;
-                mask-image: radial-gradient(
-                    ellipse 80% 60% at 50% 0%,
-                    black 40%,
-                    transparent 90%
-                );
-            }
-
-            /* ---------- nav ---------- */
-            nav {
-                position: relative;
-                z-index: 10;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 28px clamp(20px, 5vw, 64px);
-                max-width: 1240px;
-                margin: 0 auto;
-            }
-
-            .logo {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                font-family: var(--mono);
-                font-weight: 600;
-                font-size: 15px;
-                letter-spacing: -0.01em;
-            }
-
-            .logo-mark {
-                width: 9px;
-                height: 9px;
-                border-radius: 50%;
-                background: var(--amber);
-                box-shadow: 0 0 0 3px var(--amber-dim);
-            }
-
-            .nav-meta {
-                font-family: var(--mono);
-                font-size: 12px;
-                color: var(--text-faint);
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-
-            /* ---------- hero ---------- */
-            .hero {
-                position: relative;
-                z-index: 5;
-                max-width: 1240px;
-                margin: 0 auto;
-                padding: clamp(40px, 8vh, 88px) clamp(20px, 5vw, 64px) 0;
-                display: grid;
-                grid-template-columns: 1.05fr 0.95fr;
-                gap: 56px;
-                align-items: center;
-            }
-
-            @media (max-width: 920px) {
-                .hero {
-                    grid-template-columns: 1fr;
-                    padding-top: 32px;
-                }
-            }
-
-            .eyebrow {
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-                font-family: var(--mono);
-                font-size: 12px;
-                color: var(--steel);
-                background: var(--steel-dim);
-                border: 1px solid #5b8aa640;
-                padding: 6px 12px;
-                border-radius: 100px;
-                margin-bottom: 24px;
-            }
-
-            h1 {
-                font-size: clamp(34px, 4.4vw, 54px);
-                line-height: 1.06;
-                letter-spacing: -0.03em;
-                font-weight: 800;
-                margin-bottom: 22px;
-            }
-
-            h1 .accent {
-                color: var(--amber);
-            }
-
-            .sub {
-                font-size: 17px;
-                line-height: 1.6;
-                color: var(--text-dim);
-                max-width: 480px;
-                margin-bottom: 36px;
-            }
-
-            .sub code {
-                font-family: var(--mono);
-                font-size: 14px;
-                background: var(--surface);
-                border: 1px solid var(--border);
-                padding: 1px 6px;
-                border-radius: 4px;
-                color: var(--text);
-            }
-
-            /* ---------- form ---------- */
-            .signup {
-                max-width: 460px;
-            }
-
-            .signup-row {
-                display: flex;
-                gap: 10px;
-                margin-bottom: 14px;
-            }
-
-            @media (max-width: 480px) {
-                .signup-row {
-                    flex-direction: column;
-                }
-            }
-
-            input[type="email"] {
-                flex: 1;
-                background: var(--surface);
-                border: 1px solid var(--border);
-                border-radius: 8px;
-                padding: 13px 16px;
-                color: var(--text);
-                font-family: var(--sans);
-                font-size: 14.5px;
-                outline: none;
-                transition: border-color 0.15s ease;
-                min-width: 0;
-            }
-
-            input[type="email"]:focus {
-                border-color: var(--amber);
-            }
-
-            input[type="email"]::placeholder {
-                color: var(--text-faint);
-            }
-
-            .btn {
-                background: var(--amber);
-                color: #1a1305;
-                border: none;
-                border-radius: 8px;
-                padding: 13px 22px;
-                font-family: var(--sans);
-                font-weight: 700;
-                font-size: 14.5px;
-                cursor: pointer;
-                white-space: nowrap;
-                transition:
-                    transform 0.12s ease,
-                    box-shadow 0.12s ease;
-            }
-
-            .btn:hover {
-                transform: translateY(-1px);
-                box-shadow: 0 6px 20px -4px var(--amber-dim);
-            }
-            .btn:active {
-                transform: translateY(0);
-            }
-            .btn:disabled {
-                opacity: 0.6;
-                cursor: default;
-                transform: none;
-                box-shadow: none;
-            }
-
-            .role-select {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-                margin-bottom: 16px;
-            }
-
-            .role-chip {
-                font-family: var(--mono);
-                font-size: 12.5px;
-                color: var(--text-dim);
-                background: var(--surface);
-                border: 1px solid var(--border);
-                padding: 7px 13px;
-                border-radius: 100px;
-                cursor: pointer;
-                transition: all 0.12s ease;
-                user-select: none;
-            }
-
-            .role-chip:hover {
-                border-color: var(--text-faint);
-                color: var(--text);
-            }
-
-            .role-chip.active {
-                background: var(--amber-dim);
-                border-color: var(--amber);
-                color: var(--amber);
-            }
-
-            .form-note {
-                font-size: 12.5px;
-                color: var(--text-faint);
-                line-height: 1.5;
-            }
-
-            .form-status {
-                font-family: var(--mono);
-                font-size: 13px;
-                margin-top: 14px;
-                min-height: 18px;
-            }
-
-            .form-status.success {
-                color: #6fcf97;
-            }
-            .form-status.error {
-                color: #e07856;
-            }
-
-            /* ---------- log stream panel ---------- */
-            .stream-panel {
-                background: var(--surface);
-                border: 1px solid var(--border);
-                border-radius: 12px;
-                overflow: hidden;
-                box-shadow: 0 24px 60px -20px #00000080;
-            }
-
-            .stream-head {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 13px 16px;
-                border-bottom: 1px solid var(--border);
-                background: #161b23;
-            }
-
-            .stream-head-left {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                font-family: var(--mono);
-                font-size: 12px;
-                color: var(--text-faint);
-            }
-
-            .dot-row {
-                display: flex;
-                gap: 6px;
-            }
-            .win-dot {
-                width: 9px;
-                height: 9px;
-                border-radius: 50%;
-                background: #3a4250;
-            }
-
-            .live-pill {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                font-family: var(--mono);
-                font-size: 11px;
-                color: var(--text-faint);
-            }
-
-            .live-dot {
-                width: 6px;
-                height: 6px;
-                border-radius: 50%;
-                background: #6fcf97;
-                box-shadow: 0 0 0 3px #6fcf9722;
-                animation: pulse 2s ease-in-out infinite;
-            }
-
-            @keyframes pulse {
-                0%,
-                100% {
-                    opacity: 1;
-                }
-                50% {
-                    opacity: 0.4;
-                }
-            }
-
-            .stream-body {
-                height: 380px;
-                overflow: hidden;
-                padding: 14px 0;
-                position: relative;
-                font-family: var(--mono);
-                font-size: 12.5px;
-                line-height: 1.9;
-            }
-
-            .stream-body::after {
-                content: "";
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                height: 60px;
-                background: linear-gradient(transparent, var(--surface));
-                pointer-events: none;
-            }
-
-            .log-line {
-                display: flex;
-                gap: 10px;
-                padding: 1px 18px;
-                white-space: nowrap;
-                color: var(--text-faint);
-            }
-
-            .log-line .tag {
-                flex-shrink: 0;
-                width: 64px;
-                text-align: right;
-                color: var(--steel);
-            }
-
-            .log-line.anomaly {
-                background: var(--amber-dim);
-                color: var(--amber);
-                border-radius: 4px;
-                margin: 2px 8px;
-                padding: 3px 10px;
-            }
-
-            .log-line.anomaly .tag {
-                color: var(--amber);
-                font-weight: 600;
-            }
-
-            .stream-foot {
-                border-top: 1px solid var(--border);
-                padding: 12px 16px;
-                display: flex;
-                justify-content: space-between;
-                font-family: var(--mono);
-                font-size: 11.5px;
-                color: var(--text-faint);
-            }
-
-            .stream-foot b {
-                color: var(--amber);
-            }
-
-            /* ---------- proof strip ---------- */
-            .proof {
-                position: relative;
-                z-index: 5;
-                max-width: 1240px;
-                margin: 0 auto;
-                padding: 76px clamp(20px, 5vw, 64px) 0;
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 1px;
-                background: var(--border);
-                border: 1px solid var(--border);
-                border-radius: 12px;
-                overflow: hidden;
-            }
-
-            @media (max-width: 760px) {
-                .proof {
-                    grid-template-columns: repeat(2, 1fr);
-                }
-            }
-
-            .proof-cell {
-                background: var(--surface);
-                padding: 24px 22px;
-            }
-
-            .proof-num {
-                font-family: var(--mono);
-                font-size: 26px;
-                font-weight: 600;
-                color: var(--amber);
-                margin-bottom: 4px;
-            }
-
-            .proof-label {
-                font-size: 12.5px;
-                color: var(--text-dim);
-                line-height: 1.4;
-            }
-
-            /* ---------- how it works ---------- */
-            .section {
-                position: relative;
-                z-index: 5;
-                max-width: 1240px;
-                margin: 0 auto;
-                padding: 110px clamp(20px, 5vw, 64px) 0;
-            }
-
-            .section-head {
-                max-width: 560px;
-                margin-bottom: 52px;
-            }
-
-            .section-label {
-                font-family: var(--mono);
-                font-size: 12px;
-                color: var(--steel);
-                margin-bottom: 14px;
-                letter-spacing: 0.04em;
-            }
-
-            .section-head h2 {
-                font-size: clamp(24px, 3vw, 32px);
-                letter-spacing: -0.02em;
-                font-weight: 700;
-                line-height: 1.25;
-                margin-bottom: 14px;
-            }
-
-            .section-head p {
-                color: var(--text-dim);
-                font-size: 15.5px;
-                line-height: 1.6;
-            }
-
-            .pipeline {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 1px;
-                background: var(--border);
-                border: 1px solid var(--border);
-                border-radius: 12px;
-                overflow: hidden;
-            }
-
-            @media (max-width: 880px) {
-                .pipeline {
-                    grid-template-columns: 1fr;
-                }
-            }
-
-            .stage {
-                background: var(--surface);
-                padding: 26px 22px 28px;
-                position: relative;
-            }
-
-            .stage.final {
-                background: linear-gradient(
-                    160deg,
-                    var(--amber-dim),
-                    var(--surface) 60%
-                );
-            }
-
-            .stage-tag {
-                font-family: var(--mono);
-                font-size: 11px;
-                color: var(--text-faint);
-                margin-bottom: 14px;
-            }
-
-            .stage h3 {
-                font-size: 15.5px;
-                font-weight: 600;
-                margin-bottom: 8px;
-            }
-
-            .stage p {
-                font-size: 13px;
-                color: var(--text-dim);
-                line-height: 1.55;
-            }
-
-            .stage.final h3 {
-                color: var(--amber);
-            }
-
-            /* ---------- credibility / about section ---------- */
-            .credibility {
-                position: relative;
-                z-index: 5;
-                max-width: 1240px;
-                margin: 0 auto;
-                padding: 110px clamp(20px, 5vw, 64px) 0;
-            }
-
-            .credibility-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 1px;
-                background: var(--border);
-                border: 1px solid var(--border);
-                border-radius: 12px;
-                overflow: hidden;
-            }
-
-            @media (max-width: 760px) {
-                .credibility-grid {
-                    grid-template-columns: 1fr;
-                }
-            }
-
-            .cred-card {
-                background: var(--surface);
-                padding: 28px 26px;
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .cred-tag {
-                font-family: var(--mono);
-                font-size: 11px;
-                color: var(--steel);
-                letter-spacing: 0.04em;
-            }
-
-            .cred-card h3 {
-                font-size: 16.5px;
-                font-weight: 600;
-                line-height: 1.4;
-            }
-
-            .cred-card p {
-                font-size: 13.5px;
-                color: var(--text-dim);
-                line-height: 1.6;
-            }
-
-            .cred-link {
-                margin-top: 6px;
-                font-family: var(--mono);
-                font-size: 12.5px;
-                color: var(--amber);
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-                width: fit-content;
-            }
-
-            .cred-link:hover {
-                text-decoration: underline;
-            }
-
-            /* ---------- footer ---------- */
-            footer {
-                position: relative;
-                z-index: 5;
-                max-width: 1240px;
-                margin: 130px auto 0;
-                padding: 36px clamp(20px, 5vw, 64px) 44px;
-                border-top: 1px solid var(--border);
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                flex-wrap: wrap;
-                gap: 16px;
-            }
-
-            .footer-text {
-                font-family: var(--mono);
-                font-size: 12px;
-                color: var(--text-faint);
-            }
-
-            .footer-links {
-                display: flex;
-                gap: 22px;
-                font-family: var(--mono);
-                font-size: 12px;
-                color: var(--text-dim);
-            }
-
-            .footer-links a:hover {
-                color: var(--amber);
-            }
-        </style>
+        <title>Driftnet: anomaly detection calibrated on your own traffic</title>
+        <meta
+            name="description"
+            content="Driftnet is a second layer behind Suricata, Zeek or Snort. It learns what normal looks like on your network from a recording of that network, then reports what is rare by that standard, and why."
+        />
+        <meta property="og:title" content="Driftnet" />
+        <meta
+            property="og:description"
+            content="Network anomaly detection calibrated on your own traffic. Pre-release; early access opens November 2026."
+        />
+        <meta name="theme-color" content="#0e1217" />
+        <link
+            rel="icon"
+            href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e1217'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23e8a33d'/%3E%3C/svg%3E"
+        />
+        <link rel="stylesheet" href="styles.css" />
+        <script>
+            document.documentElement.classList.add("js");
+        </script>
     </head>
     <body>
-        <div class="grid-overlay"></div>
+        <a class="skip" href="#main">Skip to content</a>
+        <div class="grid-overlay" aria-hidden="true"></div>
 
-        <nav>
-            <div class="logo">
-                <span class="logo-mark"></span>
-                Driftnet
-            </div>
-            <div class="nav-meta">
-                <span id="visitor-count">early access</span>
-            </div>
-        </nav>
+        <header class="nav wrap">
+            <a class="logo" href="index.html" aria-current="page">
+                <span class="logo-mark"></span>driftnet
+            </a>
+            <nav class="nav-links" aria-label="Main">
+                <a class="nav-optional" href="#how">How it works</a>
+                <a href="status.html">Status</a>
+                <a class="btn btn-sm" href="early-access.html">Early access</a>
+            </nav>
+        </header>
 
-        <section class="hero">
-            <div class="hero-copy">
-                <div class="eyebrow">
-                    ⏺ open source · runs behind your existing IDS
+        <main id="main">
+            <section class="hero wrap">
+                <div>
+                    <a class="chip" href="status.html">
+                        <span class="chip-dot"></span>
+                        Pre-release v0.2.0 · early access opens November 2026
+                    </a>
+                    <h1>
+                        Your IDS knows the rules.
+                        <span class="accent">Driftnet learns your network.</span>
+                    </h1>
+                    <p class="lead">
+                        Driftnet is a second layer behind Suricata, Zeek or
+                        Snort. It builds a baseline from a recording of your
+                        own traffic, then reports the flows and hosts that are
+                        rare by that standard, and tells you how rare and why.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="btn" href="early-access.html"
+                            >Get early access</a
+                        >
+                        <a class="btn btn-ghost" href="status.html"
+                            >See where it stands</a
+                        >
+                    </div>
+                    <p class="hero-note">
+                        Self-hosted. Scoring is plain numpy: no TensorFlow, no
+                        ONNX runtime, no GPU. The daemon makes no outbound
+                        connections unless you configure an alert webhook.
+                    </p>
                 </div>
-                <h1>
-                    Your IDS knows the<br />rules.
-                    <span class="accent"
-                        >This learns<br />what breaks them.</span
-                    >
-                </h1>
-                <p class="sub">
-                    Driftnet sits downstream of Snort, Suricata, Zeek, and Wazuh
-                    — scoring the traffic your signatures didn't flag. An
-                    autoencoder calibrated on your own network, not a vendor's.
-                    Anything it can't reconstruct gets surfaced as
-                    <code>anomaly</code>, before it has a name.
-                </p>
 
-                <form class="signup" id="waitlist-form">
-                    <div class="signup-row">
-                        <input
-                            type="email"
-                            id="email-input"
-                            placeholder="you@yourdomain.com"
-                            required
-                            autocomplete="email"
-                        />
-                        <button type="submit" class="btn" id="submit-btn">
-                            Get early access
+                <div class="alert-panel">
+                    <div
+                        class="alert-tabs"
+                        role="tablist"
+                        aria-label="Example alerts"
+                    >
+                        <button
+                            role="tab"
+                            id="tab-upload"
+                            aria-controls="view-upload"
+                            aria-selected="true"
+                        >
+                            Large upload
+                        </button>
+                        <button
+                            role="tab"
+                            id="tab-scan"
+                            aria-controls="view-scan"
+                            aria-selected="false"
+                            tabindex="-1"
+                        >
+                            Port scan
+                        </button>
+                        <button
+                            role="tab"
+                            id="tab-new"
+                            aria-controls="view-new"
+                            aria-selected="false"
+                            tabindex="-1"
+                        >
+                            New service
                         </button>
                     </div>
 
-                    <div class="role-select" id="role-select">
-                        <div class="role-chip" data-role="SOC analyst">
-                            SOC analyst
-                        </div>
-                        <div
-                            class="role-chip"
-                            data-role="Homelab / self-hosted"
-                        >
-                            Homelab / self-hosted
-                        </div>
-                        <div class="role-chip" data-role="Security researcher">
-                            Security researcher
-                        </div>
-                        <div
-                            class="role-chip"
-                            data-role="Security engineer (company)"
-                        >
-                            Security eng. (company)
-                        </div>
-                        <div class="role-chip" data-role="Other">Other</div>
-                    </div>
+                    <article
+                        class="alert-view is-active"
+                        id="view-upload"
+                        role="tabpanel"
+                        aria-labelledby="tab-upload"
+                    >
+                        <header class="alert-head">
+                            <span class="sev sev-medium">MEDIUM</span>
+                            <span class="alert-kind"
+                                >flow anomaly <span>· upload</span></span
+                            >
+                        </header>
+                        <p class="alert-where">
+                            10.0.2.15:51515 → 203.0.113.50:443
+                            <span>tcp/443</span>
+                        </p>
+                        <dl class="alert-facts">
+                            <div>
+                                <dt>How rare</dt>
+                                <dd>
+                                    <strong>1 in 362,300</strong>
+                                    <small
+                                        >flows like the baseline look this
+                                        unusual · alerts start at 1 in
+                                        32,269</small
+                                    >
+                                </dd>
+                            </div>
+                            <div>
+                                <dt>Resembles</dt>
+                                <dd>possible data exfiltration</dd>
+                            </div>
+                        </dl>
+                        <h3 class="alert-why">Why</h3>
+                        <ul class="reasons">
+                            <li>
+                                <div class="reason-line">
+                                    <span>bytes to server</span><b>57.2 MB</b>
+                                </div>
+                                <div
+                                    class="range"
+                                    role="img"
+                                    aria-label="Observed 57.2 MB, far above the usual range of 146 B to 5.5 KB"
+                                >
+                                    <i
+                                        class="range-usual"
+                                        style="left: 16.6%; width: 22.5%"
+                                    ></i>
+                                    <i
+                                        class="range-obs"
+                                        style="left: 96.5%"
+                                    ></i>
+                                </div>
+                                <div class="reason-usual">
+                                    usually 146 B to 5.5 KB
+                                </div>
+                            </li>
+                            <li>
+                                <div class="reason-line">
+                                    <span>largest packet</span><b>1.5 KB</b>
+                                </div>
+                                <div
+                                    class="range"
+                                    role="img"
+                                    aria-label="Observed 1.5 KB, just above the usual range of 55 B to 1.4 KB"
+                                >
+                                    <i
+                                        class="range-usual"
+                                        style="left: 24.7%; width: 46.8%"
+                                    ></i>
+                                    <i
+                                        class="range-obs"
+                                        style="left: 72.7%"
+                                    ></i>
+                                </div>
+                                <div class="reason-usual">
+                                    usually 55 B to 1.4 KB
+                                </div>
+                            </li>
+                            <li>
+                                <div class="reason-line">
+                                    <span>packet size spread</span><b>690 B</b>
+                                </div>
+                                <div
+                                    class="range"
+                                    role="img"
+                                    aria-label="Observed 690 B, just above the usual range of 1 B to 673 B"
+                                >
+                                    <i
+                                        class="range-usual"
+                                        style="left: 0%; width: 70.7%"
+                                    ></i>
+                                    <i
+                                        class="range-obs"
+                                        style="left: 71%"
+                                    ></i>
+                                </div>
+                                <div class="reason-usual">
+                                    usually 1 B to 673 B
+                                </div>
+                            </li>
+                        </ul>
+                    </article>
 
-                    <div class="form-note">
-                        No spam — just a note when self-hosted access opens, and
-                        occasionally what we're learning from early testers.
-                    </div>
-                    <div class="form-status" id="form-status"></div>
-                </form>
-            </div>
+                    <article
+                        class="alert-view"
+                        id="view-scan"
+                        role="tabpanel"
+                        aria-labelledby="tab-scan"
+                    >
+                        <header class="alert-head">
+                            <span class="sev sev-critical">CRITICAL</span>
+                            <span class="alert-kind"
+                                >host anomaly <span>· fan-out</span></span
+                            >
+                        </header>
+                        <p class="alert-where">
+                            10.0.2.15 <span>one host, one minute</span>
+                        </p>
+                        <dl class="alert-facts">
+                            <div>
+                                <dt>How rare</dt>
+                                <dd>
+                                    <strong>1 in 13,500</strong>
+                                    <small
+                                        >host-minutes like the baseline look
+                                        this unusual · alerts start at 1 in
+                                        2,628</small
+                                    >
+                                </dd>
+                            </div>
+                            <div>
+                                <dt>Resembles</dt>
+                                <dd>port scan</dd>
+                            </div>
+                        </dl>
+                        <h3 class="alert-why">Why</h3>
+                        <ul class="reasons">
+                            <li>
+                                <div class="reason-line">
+                                    <span>distinct destination ports</span
+                                    ><b>213</b>
+                                </div>
+                                <div
+                                    class="range"
+                                    role="img"
+                                    aria-label="Observed 213 ports, far above the usual range of 1 to 4"
+                                >
+                                    <i
+                                        class="range-usual"
+                                        style="left: 0%; width: 20.1%"
+                                    ></i>
+                                    <i
+                                        class="range-obs"
+                                        style="left: 77.6%"
+                                    ></i>
+                                </div>
+                                <div class="reason-usual">usually 1 to 4</div>
+                            </li>
+                        </ul>
+                    </article>
 
-            <div class="stream-panel">
-                <div class="stream-head">
-                    <div class="stream-head-left">
-                        <div class="dot-row">
-                            <div class="win-dot"></div>
-                            <div class="win-dot"></div>
-                            <div class="win-dot"></div>
+                    <article
+                        class="alert-view"
+                        id="view-new"
+                        role="tabpanel"
+                        aria-labelledby="tab-new"
+                    >
+                        <header class="alert-head">
+                            <span class="sev sev-medium">MEDIUM</span>
+                            <span class="alert-kind">new service</span>
+                        </header>
+                        <p class="alert-where">
+                            10.0.2.15 → 198.51.100.22:22 <span>tcp/22</span>
+                        </p>
+                        <dl class="alert-facts">
+                            <div>
+                                <dt>Resembles</dt>
+                                <dd>
+                                    repeated attempts on a service this host
+                                    never used
+                                </dd>
+                            </div>
+                            <div>
+                                <dt>Incident</dt>
+                                <dd>
+                                    49 repeats folded into this one alert
+                                </dd>
+                            </div>
+                        </dl>
+                        <h3 class="alert-why">Why</h3>
+                        <ul class="reasons">
+                            <li class="reason-text">
+                                tcp/22 was never used in the baseline (44,466
+                                flows)
+                            </li>
+                            <li class="reason-text">
+                                50 connections in the last hour
+                            </li>
+                        </ul>
+                    </article>
+
+                    <div class="alert-foot">
+                        <div class="legend" aria-hidden="true">
+                            <span><i class="k-usual"></i>usual range</span>
+                            <span><i class="k-obs"></i>observed</span>
+                            <span>log scale</span>
                         </div>
-                        <span>flow_scorer.log</span>
-                    </div>
-                    <div class="live-pill">
-                        <span class="live-dot"></span>live
+                        Real daemon output from replaying synthetic attack
+                        flows over a public capture. Not live traffic.
                     </div>
                 </div>
-                <div class="stream-body" id="stream-body"></div>
-                <div class="stream-foot">
-                    <span>threshold=<b>0.039</b></span>
-                    <span>fpr=<b>4.0%</b></span>
-                    <span>flows/s=<b id="flow-rate">—</b></span>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <div class="proof">
-            <div class="proof-cell">
-                <div class="proof-num">0.933</div>
-                <div class="proof-label">
-                    ROC-AUC on held-out CICIoT2023 + home traffic
+            <section class="stats-wrap wrap" aria-label="Current numbers">
+                <div class="cells cols-4">
+                    <div class="stat">
+                        <div class="stat-num">8 <small>of 11</small></div>
+                        <div class="stat-label">
+                            synthetic attack scenarios caught
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-num">1 <small>alert</small></div>
+                        <div class="stat-label">
+                            in 4.7 hours of normal traffic the baseline never
+                            saw
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-num">10 <small>a day</small></div>
+                        <div class="stat-label">
+                            default alert budget; the threshold follows from it
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-num">53 <small>of 53</small></div>
+                        <div class="stat-label">automated tests passing</div>
+                    </div>
                 </div>
-            </div>
-            <div class="proof-cell">
-                <div class="proof-num">0.979</div>
-                <div class="proof-label">PR-AUC across 30+ attack families</div>
-            </div>
-            <div class="proof-cell">
-                <div class="proof-num">100%</div>
-                <div class="proof-label">
-                    TPR on volumetric DDoS / Mirai / flood attacks
-                </div>
-            </div>
-            <div class="proof-cell">
-                <div class="proof-num">~4%</div>
-                <div class="proof-label">
-                    False positive rate at calibrated threshold
-                </div>
-            </div>
-        </div>
-
-        <section class="section">
-            <div class="section-head">
-                <div class="section-label">PIPELINE</div>
-                <h2>
-                    Signatures catch the known.<br />This catches what doesn't
-                    have a name yet.
-                </h2>
-                <p>
-                    Your existing IDS stack stays exactly where it is. Driftnet
-                    only ever sees what gets past it.
+                <p class="footnote">
+                    Measured on public captures of one Windows machine's normal
+                    use, last run 10 October 2026. That is a small test.
+                    <a class="text-link" href="status.html#results"
+                        >Full results and caveats</a
+                    >
                 </p>
-            </div>
+            </section>
 
-            <div class="pipeline">
-                <div class="stage">
-                    <div class="stage-tag">01 · existing stack</div>
-                    <h3>Suricata / Snort</h3>
+            <section class="section wrap" id="how">
+                <div class="section-head">
+                    <div class="eyebrow">How it decides</div>
+                    <h2>Normal is whatever your network does.</h2>
                     <p>
-                        Signature and rule-based detection on raw traffic,
-                        unchanged from your current setup.
+                        There is no vendor model and no lab dataset. You record
+                        your own traffic, Driftnet fits a baseline to it, and
+                        every alert is a statement about that baseline.
                     </p>
                 </div>
-                <div class="stage">
-                    <div class="stage-tag">02 · existing stack</div>
-                    <h3>Zeek / Wazuh</h3>
-                    <p>
-                        Protocol logging and host-level correlation, feeding the
-                        same alert pipeline you already trust.
-                    </p>
-                </div>
-                <div class="stage">
-                    <div class="stage-tag">03 · new layer</div>
-                    <h3>Flow scoring</h3>
-                    <p>
-                        Traffic that clears the rule layer is converted to flow
-                        features and scored by an autoencoder calibrated on your
-                        benign baseline.
-                    </p>
-                </div>
-                <div class="stage final">
-                    <div class="stage-tag">04 · output</div>
-                    <h3>Anomaly report</h3>
-                    <p>
-                        Above-threshold flows get a severity score and context —
-                        for a human to triage, not a rule to silently
-                        auto-block.
-                    </p>
-                </div>
-            </div>
-        </section>
 
-        <section class="credibility">
-            <div class="section-head">
-                <div class="section-label">BACKGROUND</div>
-                <h2>
-                    Built out of a published research project,<br />not a
-                    weekend hackathon.
-                </h2>
-                <p>
-                    Driftnet grew out of peer-reviewed work on ML-augmented
-                    intrusion detection — not a demo, a research line.
+                <div class="cells cols-3">
+                    <div class="cell">
+                        <div class="cell-tag">01</div>
+                        <h3>Same features for learning and scoring</h3>
+                        <p>
+                            The baseline is built from the same flow records
+                            the daemon scores, so a feature never means one
+                            thing in training and another live.
+                        </p>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-tag">02</div>
+                        <h3>Each flow against its own kind</h3>
+                        <p>
+                            A ping is scored against other pings and an HTTPS
+                            flow against other HTTPS flows. Being a minority
+                            protocol is not an anomaly.
+                        </p>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-tag">03</div>
+                        <h3>Two layers</h3>
+                        <p>
+                            The flow layer looks at the shape of one
+                            connection. The host layer looks at what one host
+                            did in a minute, which is where scans, floods and
+                            sweeps show up.
+                        </p>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-tag">04</div>
+                        <h3>The threshold is an alert budget</h3>
+                        <p>
+                            Every score becomes “1 in N flows like the baseline
+                            would look this unusual”. You say how many alerts a
+                            day you want; the threshold follows.
+                        </p>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-tag">05</div>
+                        <h3>Incidents, not flows</h3>
+                        <p>
+                            Repeats of the same incident are counted, not
+                            re-sent. A one-hour transfer is one alert, not
+                            sixty.
+                        </p>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-tag">06</div>
+                        <h3>New services</h3>
+                        <p>
+                            The first use of a well-known port that never
+                            appeared in the baseline is reported: first SSH,
+                            first SMB, first telnet.
+                        </p>
+                    </div>
+                </div>
+
+                <p class="model-note">
+                    Under the hood, per context: a rank-Gaussian transform of
+                    each feature, a shrinkage Mahalanobis distance, and a small
+                    autoencoder's reconstruction error, calibrated on held-out
+                    baseline traffic with an extreme-value tail.
                 </p>
-            </div>
+            </section>
 
-            <div class="credibility-grid">
-                <div class="cred-card">
-                    <div class="cred-tag">PUBLICATION · IEEE HiPC 2025</div>
-                    <h3>Bridging Rules and Learning for Zero-Day Defense</h3>
+            <section class="section wrap" id="ids">
+                <div class="section-head">
+                    <div class="eyebrow">Where it sits</div>
+                    <h2>Behind the IDS you already run.</h2>
                     <p>
-                        The peer-reviewed paper behind Driftnet's core approach
-                        — augmenting Snort's signature-based detection with a
-                        lightweight ML autoencoder for zero-day anomaly
-                        detection.
+                        Driftnet does not replace Snort, Suricata or Zeek. The
+                        signature IDS stays the first layer and owns everything
+                        its rules catch. Driftnet learns from the traffic the
+                        rules let through and reports what is unusual in that
+                        remainder.
                     </p>
+                </div>
+
+                <div class="cells cols-4 stack">
+                    <div class="cell">
+                        <div class="cell-tag">01 · your network</div>
+                        <h3>Traffic</h3>
+                        <p>
+                            A live interface, or the logs your sensors already
+                            write.
+                        </p>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-tag">02 · first layer, unchanged</div>
+                        <h3>Suricata / Snort / Zeek</h3>
+                        <p>
+                            Signatures and protocol logging, exactly as you run
+                            them today.
+                        </p>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-tag">03 · second layer</div>
+                        <h3>Driftnet</h3>
+                        <p>
+                            Scores what the rules did not flag. A connection
+                            the IDS alerted on is left alone: not scored, not
+                            learned as normal.
+                        </p>
+                    </div>
+                    <div class="cell is-accent">
+                        <div class="cell-tag">04 · output</div>
+                        <h3>Explained alerts</h3>
+                        <p>
+                            JSON lines with Suricata-style field names, a text
+                            log, or a webhook. For a person to triage. Driftnet
+                            only reports; it never blocks.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="table-scroll" style="margin-top: 20px">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">Input</th>
+                                <th scope="col">How Driftnet reads it</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Suricata</th>
+                                <td>
+                                    <span class="dim"
+                                        >Follows the flow events in
+                                        <code>eve.json</code>, with no second
+                                        capture. Flows Suricata alerted on are
+                                        left to Suricata.</span
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Zeek</th>
+                                <td>
+                                    <span class="dim"
+                                        >Follows <code>conn.log</code>, TSV or
+                                        JSON.</span
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Snort 3</th>
+                                <td>
+                                    <span class="dim"
+                                        >Driftnet captures the traffic and
+                                        follows Snort's
+                                        <code>alert_json.txt</code>;
+                                        connections Snort flagged are skipped
+                                        or tagged.</span
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">No IDS</th>
+                                <td>
+                                    <span class="dim"
+                                        >Captures from an interface on its own,
+                                        or replays a pcap offline.</span
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="section wrap" id="coverage">
+                <div class="section-head">
+                    <div class="eyebrow">Coverage</div>
+                    <h2>What it catches, and what it does not.</h2>
+                    <p>
+                        Eleven synthetic attacks were mixed into a day of normal
+                        traffic the baseline had never seen, one at a time.
+                        Something that is rare is not necessarily malicious,
+                        and the reverse.
+                    </p>
+                </div>
+
+                <div class="two-col">
+                    <div class="box">
+                        <div class="box-title">
+                            <span class="state-dot state-done"></span>Caught: 8
+                        </div>
+                        <p class="box-sub">
+                            Volume, fan-out and never-seen services.
+                        </p>
+                        <ul class="checklist state-done">
+                            <li><b>600 MB upload</b> over HTTPS</li>
+                            <li><b>20 MB upload</b> over HTTPS</li>
+                            <li><b>Port scan</b>, 1,000 ports in 30 seconds</li>
+                            <li><b>Slow scan</b>, 60 ports a minute</li>
+                            <li><b>SMB sweep</b> of a /24</li>
+                            <li><b>SYN flood</b>, 20,000 a minute</li>
+                            <li>
+                                <b>Telnet scan</b>, 3,000 hosts a minute
+                            </li>
+                            <li><b>SSH brute force</b>, 200 tries</li>
+                        </ul>
+                    </div>
+                    <div class="box">
+                        <div class="box-title">
+                            <span class="state-dot state-open"></span>Missed: 3
+                        </div>
+                        <p class="box-sub">
+                            Low-and-slow traffic and rare protocols.
+                        </p>
+                        <ul class="checklist state-open">
+                            <li>
+                                <b>DNS tunnel</b> and <b>ICMP tunnel</b>. The
+                                small baseline had too little non-web traffic
+                                for those contexts to alert at all.
+                            </li>
+                            <li>
+                                <b>Command-and-control beacon</b>, one small
+                                request a minute. Traffic that looks like
+                                ordinary browsing is out of reach for flow
+                                statistics. Catching beacons needs timing
+                                analysis across flows, which Driftnet does not
+                                do.
+                            </li>
+                        </ul>
+                        <a
+                            class="text-link"
+                            href="status.html#results"
+                            style="display: inline-block; margin-top: 18px"
+                            >See the full detection matrix</a
+                        >
+                    </div>
+                </div>
+            </section>
+
+            <section class="section wrap" id="background">
+                <div class="section-head">
+                    <div class="eyebrow">Background</div>
+                    <h2>Started as a research idea.</h2>
+                    <p>
+                        Score the flows a signature engine leaves unflagged.
+                        The idea was first written up in 2025; the detector has
+                        since been rebuilt around per-network baselines.
+                    </p>
+                </div>
+
+                <div class="cells cols-2">
+                    <div class="cell">
+                        <div class="cell-tag">
+                            PAPER · IEEE HiPC 2025 WORKSHOPS
+                        </div>
+                        <h3>
+                            SnortML+: Bridging Rules and Learning for Zero-Day
+                            Defense
+                        </h3>
+                        <p>
+                            A two-page paper by Muthuraj Vairamuthu and Harsh
+                            Mistry, IIIT-Delhi, proposing an autoencoder that
+                            scores the flows Snort did not flag. Driftnet's
+                            current detector is a later rewrite and was not
+                            evaluated in that paper.
+                        </p>
+                        <a
+                            class="text-link"
+                            href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=h-0JyZwAAAAJ&citation_for_view=h-0JyZwAAAAJ:u-x6o8ySG0sC"
+                            target="_blank"
+                            rel="noopener"
+                            >Read on Google Scholar ↗</a
+                        >
+                    </div>
+                    <div class="cell">
+                        <div class="cell-tag">BUILDER</div>
+                        <h3>Harsh Mistry</h3>
+                        <p>
+                            Security researcher and full-stack developer, IIIT
+                            Delhi CSE. Red team / blue team coursework, binary
+                            exploitation, Active Directory attacks, and
+                            enterprise network architecture.
+                        </p>
+                        <a
+                            class="text-link"
+                            href="https://fakepickle.github.io"
+                            target="_blank"
+                            rel="noopener"
+                            >View portfolio ↗</a
+                        >
+                    </div>
+                </div>
+            </section>
+
+            <section class="section wrap">
+                <div class="cta">
+                    <div>
+                        <h2>Early access opens November 2026.</h2>
+                        <p>
+                            Run the self-hosted daemon on your own network, with
+                            a baseline fitted to your own traffic.
+                        </p>
+                    </div>
+                    <a class="btn" href="early-access.html">Join the list</a>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-inner wrap">
+                <p>
+                    Driftnet · pre-release v0.2.0 · updated 10 October 2026.
+                    Self-hosted: the daemon sends nothing off your network
+                    unless you configure a webhook.
+                </p>
+                <div class="footer-links">
+                    <a href="status.html">Status</a>
+                    <a href="early-access.html">Early access</a>
                     <a
-                        class="cred-link"
                         href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=h-0JyZwAAAAJ&citation_for_view=h-0JyZwAAAAJ:u-x6o8ySG0sC"
                         target="_blank"
                         rel="noopener"
-                        >Read the paper on Google Scholar ↗</a
+                        >Research</a
                     >
-                </div>
-                <div class="cred-card">
-                    <div class="cred-tag">BUILDER</div>
-                    <h3>Harsh Mistry</h3>
-                    <p>
-                        Security researcher and full-stack developer — IIIT
-                        Delhi CSE. Red team / blue team coursework, binary
-                        exploitation, Active Directory attacks, and enterprise
-                        network architecture, alongside this and other published
-                        research.
-                    </p>
                     <a
-                        class="cred-link"
                         href="https://fakepickle.github.io"
                         target="_blank"
                         rel="noopener"
-                        >View full portfolio ↗</a
+                        >Portfolio</a
                     >
                 </div>
             </div>
-        </section>
-
-        <footer>
-            <div class="footer-text">
-                Driftnet — built in the open. No data leaves your network.
-            </div>
-            <div class="footer-links">
-                <a
-                    href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=h-0JyZwAAAAJ&citation_for_view=h-0JyZwAAAAJ:u-x6o8ySG0sC"
-                    target="_blank"
-                    rel="noopener"
-                    >Research</a
-                >
-                <a
-                    href="https://fakepickle.github.io"
-                    target="_blank"
-                    rel="noopener"
-                    >Portfolio</a
-                >
-            </div>
         </footer>
 
-        <script>
-            // ---------------- simulated log stream ----------------
-            const protocols = ["TCP", "UDP", "ICMP"];
-            const subnets = ["192.168.1.", "10.0.0.", "172.16.4."];
-
-            function randIp() {
-                const base =
-                    subnets[Math.floor(Math.random() * subnets.length)];
-                return base + Math.floor(Math.random() * 254 + 1);
-            }
-
-            function randPort() {
-                return Math.floor(Math.random() * 60000 + 1024);
-            }
-
-            function makeLine(forceAnomaly = false) {
-                const isAnomaly = forceAnomaly || Math.random() < 0.07;
-                const proto =
-                    protocols[Math.floor(Math.random() * protocols.length)];
-                const src = randIp() + ":" + randPort();
-                const dst = randIp() + ":" + randPort();
-                const score = isAnomaly
-                    ? (Math.random() * 1.4 + 1.1).toFixed(4)
-                    : (Math.random() * 0.035).toFixed(4);
-                const tag = isAnomaly ? "ANOMALY" : "known";
-
-                const line = document.createElement("div");
-                line.className = "log-line" + (isAnomaly ? " anomaly" : "");
-                line.innerHTML = `<span class="tag">${tag}</span><span>${proto.padEnd(4)} ${src} → ${dst}  score=${score}</span>`;
-                return line;
-            }
-
-            const streamBody = document.getElementById("stream-body");
-            let lineCount = 0;
-            const MAX_LINES = 26;
-
-            function pushLine() {
-                const forceAnomaly = lineCount > 0 && lineCount % 19 === 0;
-                const line = makeLine(forceAnomaly);
-                streamBody.appendChild(line);
-                lineCount++;
-
-                while (streamBody.children.length > MAX_LINES) {
-                    streamBody.removeChild(streamBody.firstChild);
-                }
-                streamBody.scrollTop = streamBody.scrollHeight;
-            }
-
-            for (let i = 0; i < 14; i++) pushLine();
-            setInterval(pushLine, 420);
-
-            // fake flow rate ticker
-            const flowRateEl = document.getElementById("flow-rate");
-            setInterval(() => {
-                flowRateEl.textContent = (Math.random() * 40 + 180).toFixed(0);
-            }, 1400);
-
-            // ---------------- role chip selection ----------------
-            let selectedRole = null;
-            document.querySelectorAll(".role-chip").forEach((chip) => {
-                chip.addEventListener("click", () => {
-                    document
-                        .querySelectorAll(".role-chip")
-                        .forEach((c) => c.classList.remove("active"));
-                    chip.classList.add("active");
-                    selectedRole = chip.dataset.role;
-                });
-            });
-
-            // ---------------- form submission ----------------
-            const SUPABASE_URL = "https://gbleozojungpvnszawue.supabase.co";
-            const SUPABASE_ANON_KEY =
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdibGVvem9qdW5ncHZuc3phd3VlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MjI5NTMsImV4cCI6MjA5ODM5ODk1M30.zE3Fz7JQcG-eE9QYt3f_kKQ6hJAIV9VL9D2dZzHRfQg";
-
-            const form = document.getElementById("waitlist-form");
-            const statusEl = document.getElementById("form-status");
-            const submitBtn = document.getElementById("submit-btn");
-
-            form.addEventListener("submit", async (e) => {
-                e.preventDefault();
-                const email = document
-                    .getElementById("email-input")
-                    .value.trim();
-
-                if (!email) return;
-
-                submitBtn.disabled = true;
-                submitBtn.textContent = "Adding...";
-                statusEl.textContent = "";
-                statusEl.className = "form-status";
-
-                try {
-                    const res = await fetch(
-                        `${SUPABASE_URL}/rest/v1/waitlist`,
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                apikey: SUPABASE_ANON_KEY,
-                                Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-                                Prefer: "return=minimal",
-                            },
-                            body: JSON.stringify({ email, role: selectedRole }),
-                        },
-                    );
-
-                    if (res.ok) {
-                        statusEl.textContent =
-                            "✓ you're on the list — check your inbox for confirmation";
-                        statusEl.className = "form-status success";
-                        form.reset();
-                        document
-                            .querySelectorAll(".role-chip")
-                            .forEach((c) => c.classList.remove("active"));
-                        selectedRole = null;
-                    } else if (res.status === 409) {
-                        statusEl.textContent =
-                            "⏺ that email is already on the list";
-                        statusEl.className = "form-status error";
-                    } else {
-                        throw new Error("request failed");
-                    }
-                } catch (err) {
-                    statusEl.textContent =
-                        "⏺ something went wrong — try again in a moment";
-                    statusEl.className = "form-status error";
-                } finally {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = "Get early access";
-                }
-            });
-        </script>
+        <script src="site.js" defer></script>
     </body>
 </html>

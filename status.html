@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Status · Driftnet</title>
+        <meta
+            name="description"
+            content="Where Driftnet stands: what has been measured, what works in v0.2.0, what is built but not yet verified, and what is not built."
+        />
+        <meta property="og:title" content="Driftnet status" />
+        <meta
+            property="og:description"
+            content="Pre-release v0.2.0. 8 of 11 synthetic attack scenarios caught, 1 alert in 4.7 hours of unseen normal traffic. Early access opens November 2026."
+        />
+        <meta name="theme-color" content="#0e1217" />
+        <link
+            rel="icon"
+            href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e1217'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23e8a33d'/%3E%3C/svg%3E"
+        />
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <a class="skip" href="#main">Skip to content</a>
+        <div class="grid-overlay" aria-hidden="true"></div>
+
+        <header class="nav wrap">
+            <a class="logo" href="index.html">
+                <span class="logo-mark"></span>driftnet
+            </a>
+            <nav class="nav-links" aria-label="Main">
+                <a class="nav-optional" href="index.html#how">How it works</a>
+                <a href="status.html" aria-current="page">Status</a>
+                <a class="btn btn-sm" href="early-access.html">Early access</a>
+            </nav>
+        </header>
+
+        <main id="main">
+            <section class="page-head wrap">
+                <div class="eyebrow">Status · updated 10 October 2026</div>
+                <h1>Where Driftnet stands.</h1>
+                <p class="lead">
+                    Driftnet is pre-release software. Version 0.2.0 is a
+                    rewrite of the detector. It has been measured on recorded
+                    captures and on a growing Suricata log, not yet on a live
+                    interface. This page lists what was measured, what works,
+                    and what is not done.
+                </p>
+            </section>
+
+            <section class="stats-wrap wrap" aria-label="Current numbers">
+                <div class="cells cols-5">
+                    <div class="stat">
+                        <div class="stat-num">0.2.0</div>
+                        <div class="stat-label">
+                            current version, pre-release
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-num">53 <small>of 53</small></div>
+                        <div class="stat-label">automated tests passing</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-num">8 <small>of 11</small></div>
+                        <div class="stat-label">
+                            synthetic attack scenarios caught
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-num">1 <small>alert</small></div>
+                        <div class="stat-label">
+                            in 4.7 hours of unseen normal traffic
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-num">Nov <small>2026</small></div>
+                        <div class="stat-label">
+                            early access opens ·
+                            <a class="text-link" href="early-access.html"
+                                >join the list</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section wrap" id="results">
+                <div class="section-head">
+                    <div class="eyebrow">Detection results</div>
+                    <h2>Measured on four days of one machine's traffic.</h2>
+                    <p>
+                        The test data is the public Stratosphere CTU-Normal
+                        captures (23, 24, 25 and 20): one Windows machine's
+                        normal use over four days. Everything below uses the
+                        default configuration, with an alert budget of 10 a
+                        day. Last run 10 October 2026.
+                    </p>
+                </div>
+
+                <div class="cells cols-3">
+                    <div class="cell">
+                        <div class="cell-tag">BASELINE</div>
+                        <h3>Two days, 6.7 hours</h3>
+                        <p>
+                            44,466 flows. Web traffic (<code>tcp/443</code>,
+                            <code>tcp/80</code>) had enough data for its own
+                            models; everything else shared a pooled one.
+                        </p>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-tag">NORMAL TRAFFIC, UNSEEN</div>
+                        <h3>Two more days, 4.7 hours: 1 alert</h3>
+                        <p>
+                            48,019 flows. One alert, severity LOW, for unusual
+                            packet sizes on a single flow. One large download
+                            was muted, as the default configuration does.
+                        </p>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-tag">ATTACKS, SYNTHETIC</div>
+                        <h3>8 of 11 scenarios caught</h3>
+                        <p>
+                            Attack flows mixed into one unseen day, one type at
+                            a time, and replayed through the same engine the
+                            daemon runs.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="table-scroll" style="margin-top: 20px">
+                    <table class="matrix">
+                        <caption>
+                            Highest severity each layer raised for the
+                            scenario. A dash means that layer raised nothing.
+                            Severity is how far past the alert threshold the
+                            event is, one step per factor of ten.
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Scenario</th>
+                                <th scope="col">Result</th>
+                                <th scope="col">Flow layer</th>
+                                <th scope="col">Host layer</th>
+                                <th scope="col">New service</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">
+                                    600 MB upload over HTTPS
+                                </th>
+                                <td><span class="result caught">caught</span></td>
+                                <td>
+                                    <span class="sev sev-medium">MEDIUM</span>
+                                </td>
+                                <td><span class="sev sev-low">LOW</span></td>
+                                <td class="none">–</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">20 MB upload over HTTPS</th>
+                                <td><span class="result caught">caught</span></td>
+                                <td>
+                                    <span class="sev sev-medium">MEDIUM</span>
+                                </td>
+                                <td><span class="sev sev-low">LOW</span></td>
+                                <td class="none">–</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    Port scan
+                                    <small>1,000 ports in 30 seconds</small>
+                                </th>
+                                <td><span class="result caught">caught</span></td>
+                                <td class="none">–</td>
+                                <td>
+                                    <span class="sev sev-critical"
+                                        >CRITICAL</span
+                                    >
+                                </td>
+                                <td><span class="sev sev-high">HIGH</span></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    Slow scan
+                                    <small>60 ports a minute</small>
+                                </th>
+                                <td><span class="result caught">caught</span></td>
+                                <td class="none">–</td>
+                                <td><span class="sev sev-high">HIGH</span></td>
+                                <td><span class="sev sev-high">HIGH</span></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">SMB sweep of a /24</th>
+                                <td><span class="result caught">caught</span></td>
+                                <td class="none">–</td>
+                                <td><span class="sev sev-high">HIGH</span></td>
+                                <td>
+                                    <span class="sev sev-medium">MEDIUM</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    SYN flood
+                                    <small>20,000 a minute</small>
+                                </th>
+                                <td><span class="result caught">caught</span></td>
+                                <td class="none">–</td>
+                                <td><span class="sev sev-low">LOW</span></td>
+                                <td class="none">–</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    Telnet scan
+                                    <small>3,000 hosts a minute</small>
+                                </th>
+                                <td><span class="result caught">caught</span></td>
+                                <td class="none">–</td>
+                                <td>
+                                    <span class="sev sev-critical"
+                                        >CRITICAL</span
+                                    >
+                                </td>
+                                <td>
+                                    <span class="sev sev-medium">MEDIUM</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    SSH brute force
+                                    <small>200 tries</small>
+                                </th>
+                                <td><span class="result caught">caught</span></td>
+                                <td class="none">–</td>
+                                <td class="none">–</td>
+                                <td>
+                                    <span class="sev sev-medium">MEDIUM</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">DNS tunnel</th>
+                                <td><span class="result missed">missed</span></td>
+                                <td class="none">–</td>
+                                <td class="none">–</td>
+                                <td class="none">–</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">ICMP tunnel</th>
+                                <td><span class="result missed">missed</span></td>
+                                <td class="none">–</td>
+                                <td class="none">–</td>
+                                <td class="none">–</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    Command-and-control beacon
+                                    <small>one small request a minute</small>
+                                </th>
+                                <td><span class="result missed">missed</span></td>
+                                <td class="none">–</td>
+                                <td class="none">–</td>
+                                <td class="none">–</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="box" style="margin-top: 20px">
+                    <div class="box-title">Read these numbers with care</div>
+                    <p class="box-sub">
+                        They show the detector behaves sensibly on a small
+                        test. They do not show how it does on your network.
+                    </p>
+                    <ul class="caveats">
+                        <li>
+                            The attack flows are synthetic, built to look like
+                            what the capture library reports for such traffic.
+                            They are not captures of real tools.
+                        </li>
+                        <li>
+                            One machine and 6.7 hours is a small baseline. Rare
+                            contexts, meaning anything that is not web traffic
+                            on that machine, had too little data to alert. That
+                            is why the two tunnels were missed.
+                        </li>
+                        <li>
+                            Low-and-slow traffic that looks like ordinary
+                            browsing is out of reach for flow statistics.
+                            Catching beacons needs timing analysis across
+                            flows, which Driftnet does not do.
+                        </li>
+                        <li>
+                            Something that is rare is not necessarily
+                            malicious, and the reverse.
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section wrap" id="development">
+                <div class="section-head">
+                    <div class="eyebrow">Development</div>
+                    <h2>What works, what is unverified, what is not built.</h2>
+                    <p>
+                        Version 0.2.0 replaced the first prototype's lab-trained
+                        model with a baseline fitted to the network it runs on.
+                    </p>
+                </div>
+
+                <div class="three-col">
+                    <div class="box">
+                        <div class="box-title">
+                            <span class="state-dot state-done"></span>Working
+                            in 0.2.0
+                        </div>
+                        <p class="box-sub">Implemented and under test.</p>
+                        <ul class="checklist state-done">
+                            <li>
+                                <b>Baseline from your own traffic</b>: record,
+                                fit, inspect, and re-fit from flows the daemon
+                                has kept
+                            </li>
+                            <li>
+                                <b>Flow and host layers</b>, each service scored
+                                against its own kind
+                            </li>
+                            <li>
+                                <b>Alert budget</b> in place of a score
+                                threshold
+                            </li>
+                            <li>
+                                <b>Incidents</b>: repeats counted, kinds
+                                muted, an hourly cap
+                            </li>
+                            <li><b>New-service</b> detection</li>
+                            <li>
+                                <b>Inputs</b>: live interface, pcap, Zeek
+                                <code>conn.log</code>, Suricata
+                                <code>eve.json</code>
+                            </li>
+                            <li>
+                                <b>IDS awareness</b>: skips or tags
+                                connections Suricata or Snort 3 already
+                                alerted on
+                            </li>
+                            <li>
+                                <b>Outputs</b>: text log, JSON lines, webhook
+                            </li>
+                            <li>
+                                <b>Offline replay</b> of a capture or log
+                                through the daemon's own code
+                            </li>
+                            <li>
+                                <b>Explanations</b>: each alert says how rare
+                                the event is and which measurements made it so
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="box">
+                        <div class="box-title">
+                            <span class="state-dot state-partial"></span>Built,
+                            not yet verified
+                        </div>
+                        <p class="box-sub">
+                            The code exists. It has not been exercised.
+                        </p>
+                        <ul class="checklist state-partial">
+                            <li>
+                                <b>Live interface capture</b>. Same code path
+                                as pcap replay, but the test environment had
+                                no capture privileges
+                            </li>
+                            <li>
+                                <b>Windows</b>, through Npcap. Not run on this
+                                version
+                            </li>
+                            <li>
+                                <b>Raspberry Pi</b>, 64-bit. Supported by the
+                                dependencies, not yet run on a device
+                            </li>
+                            <li>
+                                <b>Wazuh</b>. The example rules have not been
+                                tested against a live Wazuh
+                            </li>
+                            <li>
+                                <b>Real attack tools</b>. Every attack so far
+                                is synthetic
+                            </li>
+                            <li>
+                                <b>More than one network</b>. One machine's
+                                traffic so far
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="box">
+                        <div class="box-title">
+                            <span class="state-dot state-open"></span>Not
+                            built
+                        </div>
+                        <p class="box-sub">Open today.</p>
+                        <ul class="checklist state-open">
+                            <li>
+                                <b>Beacon and tunnel detection</b>. Needs
+                                timing analysis across flows
+                            </li>
+                            <li>
+                                <b>Licence</b>. None has been published, so
+                                the code is not open source today
+                            </li>
+                            <li>
+                                <b>Container image</b> or a one-command
+                                install
+                            </li>
+                            <li>
+                                <b>Dashboard</b>. Alerts are files and
+                                webhooks; there is no web interface
+                            </li>
+                            <li><b>Hosted console</b></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section wrap" id="timeline">
+                <div class="section-head">
+                    <div class="eyebrow">Timeline</div>
+                    <h2>How it got here.</h2>
+                </div>
+
+                <ol class="timeline">
+                    <li class="is-done">
+                        <div class="tl-date">December 2025</div>
+                        <div class="tl-body">
+                            <h3>The idea</h3>
+                            <p>
+                                A two-page paper in the IEEE HiPC 2025 workshop
+                                proceedings: put an anomaly model behind a
+                                signature engine and score what it leaves
+                                unflagged.
+                            </p>
+                        </div>
+                    </li>
+                    <li class="is-done">
+                        <div class="tl-date">June 2026</div>
+                        <div class="tl-body">
+                            <h3>First prototype</h3>
+                            <p>
+                                An autoencoder trained on a lab dataset,
+                                scoring live flows. It did not transfer: on
+                                real traffic it flagged almost everything.
+                            </p>
+                        </div>
+                    </li>
+                    <li class="is-done">
+                        <div class="tl-date">October 2026</div>
+                        <div class="tl-body">
+                            <h3>Detector rewritten, v0.2.0</h3>
+                            <p>
+                                Baselines fitted to your own traffic, an alert
+                                budget, flow and host layers, Suricata and Zeek
+                                input, explanations on every alert, and a test
+                                suite.
+                            </p>
+                        </div>
+                    </li>
+                    <li class="is-next">
+                        <div class="tl-date">November 2026</div>
+                        <div class="tl-body">
+                            <h3>Early access opens</h3>
+                            <p>
+                                The self-hosted daemon, for people on the list
+                                to run on their own networks.
+                                <a class="text-link" href="early-access.html"
+                                    >Join the list</a
+                                >
+                            </p>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="section wrap">
+                <div class="cta">
+                    <div>
+                        <h2>Want to run it on your network?</h2>
+                        <p>
+                            Early access opens November 2026. One machine's
+                            traffic is a small test; more networks are what
+                            this needs next.
+                        </p>
+                    </div>
+                    <a class="btn" href="early-access.html">Join the list</a>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-inner wrap">
+                <p>
+                    Driftnet · pre-release v0.2.0 · updated 10 October 2026.
+                    Self-hosted: the daemon sends nothing off your network
+                    unless you configure a webhook.
+                </p>
+                <div class="footer-links">
+                    <a href="index.html">Overview</a>
+                    <a href="early-access.html">Early access</a>
+                    <a
+                        href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=h-0JyZwAAAAJ&citation_for_view=h-0JyZwAAAAJ:u-x6o8ySG0sC"
+                        target="_blank"
+                        rel="noopener"
+                        >Research</a
+                    >
+                    <a
+                        href="https://fakepickle.github.io"
+                        target="_blank"
+                        rel="noopener"
+                        >Portfolio</a
+                    >
+                </div>
+            </div>
+        </footer>
+
+        <script src="site.js" defer></script>
+    </body>
+</html>

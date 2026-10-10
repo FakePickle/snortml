@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Early access · Driftnet</title>
+        <meta
+            name="description"
+            content="Driftnet early access opens November 2026: the self-hosted anomaly daemon, run on your own network with a baseline fitted to your own traffic."
+        />
+        <meta property="og:title" content="Driftnet early access" />
+        <meta
+            property="og:description"
+            content="Early access opens November 2026. Join the list to run the self-hosted daemon on your own network."
+        />
+        <meta name="theme-color" content="#0e1217" />
+        <link
+            rel="icon"
+            href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e1217'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23e8a33d'/%3E%3C/svg%3E"
+        />
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <a class="skip" href="#main">Skip to content</a>
+        <div class="grid-overlay" aria-hidden="true"></div>
+
+        <header class="nav wrap">
+            <a class="logo" href="index.html">
+                <span class="logo-mark"></span>driftnet
+            </a>
+            <nav class="nav-links" aria-label="Main">
+                <a class="nav-optional" href="index.html#how">How it works</a>
+                <a href="status.html">Status</a>
+                <a
+                    class="btn btn-sm"
+                    href="early-access.html"
+                    aria-current="page"
+                    >Early access</a
+                >
+            </nav>
+        </header>
+
+        <main id="main">
+            <section class="ea-hero wrap">
+                <div>
+                    <div class="eyebrow">Early access</div>
+                    <h1>
+                        Early access opens
+                        <span class="accent">November 2026.</span>
+                    </h1>
+                    <p class="lead">
+                        Early access is the self-hosted Driftnet daemon, run on
+                        your own network with a baseline fitted to your own
+                        traffic. Join the list and you get an email when it
+                        opens.
+                    </p>
+                    <ul class="ea-points">
+                        <li>
+                            <span
+                                ><b>It runs on your machine.</b> The daemon
+                                makes no outbound connections unless you
+                                configure an alert webhook.</span
+                            >
+                        </li>
+                        <li>
+                            <span
+                                ><b>It sits behind what you have.</b> Point it
+                                at a Suricata <code>eve.json</code> or a Zeek
+                                <code>conn.log</code>, or let it capture on its
+                                own.</span
+                            >
+                        </li>
+                        <li>
+                            <span
+                                ><b>It is pre-release.</b> Measured on recorded
+                                captures so far, not yet on a live interface.
+                                <a class="text-link" href="status.html"
+                                    >See exactly where it stands</a
+                                ></span
+                            >
+                        </li>
+                    </ul>
+                </div>
+
+                <form class="signup" id="waitlist-form">
+                    <h2>Join the early-access list</h2>
+                    <p>One email when access opens in November.</p>
+
+                    <label class="field-label" for="email-input">Email</label>
+                    <input
+                        type="email"
+                        id="email-input"
+                        name="email"
+                        placeholder="you@yourdomain.com"
+                        required
+                        autocomplete="email"
+                    />
+
+                    <fieldset>
+                        <legend>What describes you best? (optional)</legend>
+                        <div class="roles">
+                            <label
+                                ><input
+                                    type="radio"
+                                    name="role"
+                                    value="SOC analyst"
+                                /><span>SOC analyst</span></label
+                            >
+                            <label
+                                ><input
+                                    type="radio"
+                                    name="role"
+                                    value="Homelab / self-hosted"
+                                /><span>Homelab / self-hosted</span></label
+                            >
+                            <label
+                                ><input
+                                    type="radio"
+                                    name="role"
+                                    value="Security researcher"
+                                /><span>Security researcher</span></label
+                            >
+                            <label
+                                ><input
+                                    type="radio"
+                                    name="role"
+                                    value="Security engineer (company)"
+                                /><span>Security eng. (company)</span></label
+                            >
+                            <label
+                                ><input
+                                    type="radio"
+                                    name="role"
+                                    value="Other"
+                                /><span>Other</span></label
+                            >
+                        </div>
+                    </fieldset>
+
+                    <button type="submit" class="btn" id="submit-btn">
+                        Get early access
+                    </button>
+
+                    <p class="form-note">
+                        No spam. A note when self-hosted access opens, and
+                        occasionally what we are learning from early testers.
+                    </p>
+                    <div
+                        class="form-status"
+                        id="form-status"
+                        role="status"
+                        aria-live="polite"
+                    ></div>
+                    <noscript>
+                        <p class="form-status error">
+                            This form needs JavaScript to submit.
+                        </p>
+                    </noscript>
+                </form>
+            </section>
+
+            <section class="section wrap" id="steps">
+                <div class="section-head">
+                    <div class="eyebrow">What you will do</div>
+                    <h2>Record, run, read.</h2>
+                    <p>
+                        Three steps from a recording of your network to
+                        explained alerts. A day of baseline is the minimum
+                        worth having; a week is better.
+                    </p>
+                </div>
+
+                <div class="cells cols-3">
+                    <div class="cell">
+                        <div class="cell-tag">01 · record</div>
+                        <h3>Fit a baseline from your own traffic</h3>
+                        <p>
+                            Record normal traffic from an interface, or read an
+                            existing capture or log. Whatever is in the
+                            recording becomes normal, so record when you
+                            believe the network is clean.
+                        </p>
+                        <pre
+                            class="code"
+                        ><span class="c">$</span> sudo python -m snortml_inference \
+    baseline --source eth0 \
+    --duration 86400</pre>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-tag">02 · run</div>
+                        <h3>Score live traffic, or a growing log</h3>
+                        <p>
+                            Capture on an interface, or follow the log your
+                            Suricata or Zeek sensor already writes. Following a
+                            log needs read access only, no capture privileges.
+                        </p>
+                        <pre
+                            class="code"
+                        ><span class="c">$</span> sudo python -m snortml_inference \
+    run --interface eth0</pre>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-tag">03 · read</div>
+                        <h3>Triage alerts that explain themselves</h3>
+                        <p>
+                            Each alert says how rare the event is and which
+                            measurements made it so. One JSON object per alert,
+                            ready for Wazuh or any SIEM, or a webhook.
+                        </p>
+                        <pre
+                            class="code"
+                        ><span class="c">$</span> tail -f alerts/alerts.jsonl</pre>
+                    </div>
+                </div>
+
+                <p class="model-note">
+                    No network to spare? <code class="inline-code">replay</code>
+                    runs a recorded pcap, <code class="inline-code">conn.log</code>
+                    or <code class="inline-code">eve.json</code> through
+                    exactly the code the daemon runs and prints what would have
+                    alerted.
+                </p>
+            </section>
+
+            <section class="section wrap" id="expect">
+                <div class="section-head">
+                    <div class="eyebrow">Before you sign up</div>
+                    <h2>What you need, and what to expect.</h2>
+                </div>
+
+                <div class="two-col">
+                    <div class="box">
+                        <div class="box-title">What you need</div>
+                        <p class="box-sub">Nothing exotic.</p>
+                        <ul class="checklist state-done">
+                            <li>
+                                <b>A 64-bit Linux machine</b> that can see the
+                                traffic you care about, with Python 3.10 or
+                                newer and libpcap
+                            </li>
+                            <li>
+                                <b>Or logs you already have</b>: a Suricata
+                                <code>eve.json</code> or a Zeek
+                                <code>conn.log</code>
+                            </li>
+                            <li>
+                                <b>A day or more of traffic</b> you believe is
+                                clean, to fit the baseline
+                            </li>
+                            <li>
+                                <b>No GPU</b>, no TensorFlow, no ONNX runtime.
+                                Scoring is plain numpy
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="box">
+                        <div class="box-title">What to expect</div>
+                        <p class="box-sub">It is early. Plainly:</p>
+                        <ul class="checklist state-partial">
+                            <li>
+                                <b>You may be first.</b> Live interface
+                                capture, Windows and Raspberry Pi are built but
+                                not yet verified
+                            </li>
+                            <li>
+                                <b>A budget of 10 alerts a day</b> by default,
+                                which is yours to change
+                            </li>
+                            <li>
+                                <b>Blind spots.</b> It does not catch beacons
+                                or tunnels today
+                            </li>
+                            <li>
+                                <b>Alerts are leads, not verdicts.</b> Rare is
+                                not the same as malicious
+                            </li>
+                            <li>
+                                <b>A command line.</b> There is no dashboard;
+                                alerts are files and webhooks
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section wrap" id="faq">
+                <div class="section-head">
+                    <div class="eyebrow">Questions</div>
+                    <h2>Asked before signing up.</h2>
+                </div>
+
+                <div class="faq">
+                    <details>
+                        <summary>Does anything leave my network?</summary>
+                        <div>
+                            <p>
+                                No. The daemon reads traffic or logs and writes
+                                alerts to local files. The one exception is the
+                                alert webhook, which posts each alert to a URL
+                                you choose, and is off unless you set it.
+                            </p>
+                            <p>
+                                The baseline, recorded flows, alerts and logs
+                                all contain your network's addresses. They stay
+                                on the machine that runs the daemon.
+                            </p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>
+                            Does it replace Suricata, Snort or Zeek?
+                        </summary>
+                        <div>
+                            <p>
+                                No. The signature IDS stays the first layer and
+                                owns everything its rules catch. Driftnet is
+                                the second layer: it reports what is unusual in
+                                the traffic the rules let through. It also runs
+                                on its own if you have no IDS.
+                            </p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>How long before it is useful?</summary>
+                        <div>
+                            <p>
+                                It needs a baseline first. A day of normal
+                                traffic is the minimum worth having and a week
+                                is better. After that the daemon keeps the
+                                flows it sees, and one command re-fits the
+                                baseline as your network changes.
+                            </p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Will it run on Windows or a Raspberry Pi?</summary>
+                        <div>
+                            <p>
+                                It is built to: Windows through Npcap, and
+                                64-bit Raspberry Pi OS. Neither has been
+                                verified on this version yet, so 64-bit Linux
+                                is the safe choice for early access. 32-bit ARM
+                                is not supported.
+                            </p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Is it open source?</summary>
+                        <div>
+                            <p>
+                                Not today. No licence has been published yet.
+                                The
+                                <a class="text-link" href="status.html"
+                                    >status page</a
+                                >
+                                will say so when one is.
+                            </p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>What happens to my email address?</summary>
+                        <div>
+                            <p>
+                                It goes on the early-access list, with the role
+                                you picked if you picked one. It is used to
+                                tell you when access opens and, occasionally,
+                                what early testers are finding. Nothing else.
+                            </p>
+                        </div>
+                    </details>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-inner wrap">
+                <p>
+                    Driftnet · pre-release v0.2.0 · updated 10 October 2026.
+                    Self-hosted: the daemon sends nothing off your network
+                    unless you configure a webhook.
+                </p>
+                <div class="footer-links">
+                    <a href="index.html">Overview</a>
+                    <a href="status.html">Status</a>
+                    <a
+                        href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=h-0JyZwAAAAJ&citation_for_view=h-0JyZwAAAAJ:u-x6o8ySG0sC"
+                        target="_blank"
+                        rel="noopener"
+                        >Research</a
+                    >
+                    <a
+                        href="https://fakepickle.github.io"
+                        target="_blank"
+                        rel="noopener"
+                        >Portfolio</a
+                    >
+                </div>
+            </div>
+        </footer>
+
+        <script src="site.js" defer></script>
+    </body>
+</html>
